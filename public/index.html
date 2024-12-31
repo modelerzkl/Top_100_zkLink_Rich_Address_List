@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>zkLink Token Balance Ranking TOP 100</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>zkLink Token Balance Ranking TOP 100 - token balance ranking, paging support, the cache time is one hour</h1>
+  <table id="balances-table">
+    <thead>
+      <tr>
+        <th>Ranking</th>
+        <th>Address</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
+
+  <script>
+    // サーバからデータを取得してテーブルに表示
+    async function fetchBalances() {
+      const response = await fetch('/get-balances');
+      const balances = await response.json();
+
+      const tableBody = document.querySelector('#balances-table tbody');
+      balances.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.Ranking}</td>
+          <td>${item.address}</td>
+          <td>${item.balance}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    fetchBalances();
+  </script>
+</body>
+</html>
+
