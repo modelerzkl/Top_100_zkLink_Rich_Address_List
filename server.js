@@ -24,7 +24,7 @@ app.get('/get-balances', async (req, res) => {
 
     // ランキングを付ける（数値として連番）
     const rankedBalances = balances.map((item, index) => {
-      item.Ranking = index + 1;  // ランキングを数値として付与
+      item.Ranking = index + 1;
       return item;
     });
 

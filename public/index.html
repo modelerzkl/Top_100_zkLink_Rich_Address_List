@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>zkLink Token Balance Ranking TOP 100</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -21,10 +22,16 @@
     th {
       background-color: #f2f2f2;
     }
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
   </style>
 </head>
 <body>
-  <h1>zkLink Token Balance Ranking TOP 100 - token balance ranking, paging support, the cache time is one hour</h1>
+  <h1>zkLink Token Balance Ranking TOP 100 - Updated Every Hour</h1>
   <table id="balances-table">
     <thead>
       <tr>
@@ -37,6 +44,10 @@
       <!-- Data will be inserted here -->
     </tbody>
   </table>
+
+  <div class="footer">
+    Created by <a href="https://twitter.com/modelerzkl" target="_blank">X@modelerzkl</a>
+  </div>
 
   <script>
     // サーバからデータを取得してテーブルに表示
@@ -60,4 +71,3 @@
   </script>
 </body>
 </html>
-
