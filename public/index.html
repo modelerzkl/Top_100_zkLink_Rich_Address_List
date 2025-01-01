@@ -8,54 +8,125 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center; /* Center content horizontally */
+      align-items: center;     /* Center content vertically */
+      text-align: center;
+      min-height: 100vh;       /* Full viewport height */
     }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
     table {
-      width: 100%;
+      width: 90%;
+      max-width: 1000px;
       border-collapse: collapse;
+      margin-bottom: 20px;
+      box-sizing: border-box;
     }
+
     th, td {
-      padding: 8px 12px;
+      padding: 10px 12px;
       text-align: left;
       border-bottom: 1px solid #ddd;
     }
+
     th {
       background-color: #f2f2f2;
+      font-size: 1rem;
     }
+
+    td {
+      font-size: 0.9rem;
+      word-break: break-word;
+    }
+
     .footer {
       margin-top: 20px;
-      text-align: center;
-      font-size: 14px;
+      font-size: 0.9rem;
       color: #555;
+      width: 100%; /* Ensure footer takes full width */
+      text-align: center;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      th, td {
+        padding: 8px 10px;
+      }
+
+      .footer {
+        font-size: 0.8rem;
+      }
+
+      table {
+        padding: 0 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+
+      th, td {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>zkLink Token Balance Ranking TOP 100 - Updated Every Hour</h1>
-  <table id="balances-table">
-    <thead>
-      <tr>
-        <th>Ranking</th>
-        <th>Address</th>
-        <th>Balance</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Data will be inserted here -->
-    </tbody>
-  </table>
-
-  <div class="footer">
-    Created by <a href="https://twitter.com/modelerzkl" target="_blank">X@modelerzkl</a>
+  <div>
+    <h1>zkLink Token Balance Ranking TOP 100 - Updated Every Hour</h1>
+    <table id="balances-table">
+      <thead>
+        <tr>
+          <th>Ranking</th>
+          <th>Address</th>
+          <th>Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be inserted here -->
+      </tbody>
+    </table>
+    <div class="footer">
+      <p>Created by <a href="https://x.com/modelerzkl" target="_blank">X@modelerzkl</a></p>
+    </div>
   </div>
 
   <script>
-    // サーバからデータを取得してテーブルに表示
+    // Fetch data from the server and populate the table
     async function fetchBalances() {
       const response = await fetch('/get-balances');
       const balances = await response.json();
 
       const tableBody = document.querySelector('#balances-table tbody');
+      tableBody.innerHTML = ''; // Clear any existing rows
       balances.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -71,3 +142,4 @@
   </script>
 </body>
 </html>
+
