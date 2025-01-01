@@ -9,26 +9,36 @@ const apiUrl = 'https://explorer-api.zklink.io/tokens/balance/list?page=1&limit=
 // 静的ファイル（HTMLファイルなど）を提供する
 app.use(express.static('public'));
 
+// 対応する文字列とアドレス
+const addressLabels = {
+  '0xC9A3Cf506180757AcfCbE8D78B73E5335926e65B': 'Community Treasury',
+  '0x82C1889F00EfcDaB3Cde8Ce2DBAAEa57f8Dd6D0B': 'Ecosystem Development',
+  '0x223e33eBBD7005D5a7C6ef4BAA35eBd74C691D79': 'Team & Advisors',
+  '0x262cac775BBe38f161275B5d25bD365B20a2Ed00': 'Early Private Purchasers',
+  '0x2123f6d10B580BAf5Eb25a16Bf62F2782cc514C6': 'Liquidity Reserve'
+};
+
 // APIからデータを取得し、整形する
 app.get('/get-balances', async (req, res) => {
   try {
-    // APIからデータを取得
     const response = await axios.get(apiUrl);
-    
-    // 取得したデータのbalance部分に対して小数点を削除して3桁ごとにカンマを追加
     const balances = response.data.map(item => {
       const formattedBalance = Math.floor(item.balance).toLocaleString();
       item.balance = formattedBalance + ' ZKL';
+      
+      // アドレスに対応するラベルを追加し、" :"を付け加える
+      if (addressLabels[item.address]) {
+        item.label = addressLabels[item.address] + ' :';
+      }
+      
       return item;
     });
 
-    // ランキングを付ける（数値として連番）
     const rankedBalances = balances.map((item, index) => {
       item.Ranking = index + 1;
       return item;
     });
 
-    // クライアントに返す
     res.json(rankedBalances);
   } catch (error) {
     console.error('Error fetching data:', error);

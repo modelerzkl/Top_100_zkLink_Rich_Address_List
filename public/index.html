@@ -19,14 +19,19 @@
       min-height: 100vh;       /* Full viewport height */
     }
 
+    div {
+      width: 70;  /* Content takes up 70% of screen width */
+      max-width: 1000px; /* Max width limit */
+      text-align: left; /* Align content to the left inside the container */
+    }
+
     h1 {
       font-size: 1.8rem;
       margin-bottom: 20px;
     }
 
     table {
-      width: 90%;
-      max-width: 1000px;
+      width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
       box-sizing: border-box;
@@ -127,13 +132,22 @@
 
       const tableBody = document.querySelector('#balances-table tbody');
       tableBody.innerHTML = ''; // Clear any existing rows
+
       balances.forEach(item => {
         const row = document.createElement('tr');
+
+        // Create row content, including label if it exists
+        let addressContent = `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>`;
+        if (item.label) {
+          addressContent = `<strong>${item.label}</strong><br>${addressContent}`;
+        }
+
         row.innerHTML = `
           <td>${item.Ranking}</td>
-          <td>${item.address}</td>
+          <td>${addressContent}</td>
           <td>${item.balance}</td>
         `;
+        
         tableBody.appendChild(row);
       });
     }
