@@ -4,105 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>zkLink Token Balance Ranking TOP 100</title>
-  <link rel="icon" href="/favicon.png" type="image/png">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      background-color: #f9f9f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      min-height: 100vh;
-    }
-
-    div {
-      width: 95%;
-      max-width: 1000px;
-      text-align: left;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-
-    th, td {
-      padding: 10px 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: #f2f2f2;
-      font-size: 1rem;
-    }
-
-    td {
-      font-size: 0.9rem;
-      word-break: break-word;
-    }
-
-    .footer {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: #555;
-      width: 100%;
-      text-align: center;
-    }
-
-    a {
-      color: #007bff;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .footer a {
-      display: inline-block;
-      margin: 5px 10px;
-    }
-
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      th, td {
-        padding: 8px 10px;
-      }
-
-      .footer {
-        font-size: 0.8rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.2rem;
-      }
-
-      th, td {
-        font-size: 0.8rem;
-        padding: 6px 8px;
-      }
-
-      .footer {
-        font-size: 0.75rem;
-      }
-    }
-  </style>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div>
@@ -120,18 +23,18 @@
       </tbody>
     </table>
     <div class="footer">
-      <p>
-        <strong style="color: #777;">Reference</strong><br>
-        <a href="https://www.coincarp.com/currencies/zklink/richlist/" target="_blank">Top 100 Richest zkLink Addresses [Ethereum] | CoinCarp</a> |
-        <a href="https://explorer-api.zklink.io/docs#/" target="_blank">Block explorer API</a> |
-        <a href="https://zk.link/governance" target="_blank">zkLink Treasury</a>
+      <p class="info-text">
+        <strong>Reference</strong><br>
+        <a href="https://zk.link/governance" target="_blank">zkLink Treasury | zk.link</a><br>
+        <a href="https://explorer-api.zklink.io/docs#/" target="_blank">zkLink Nova Block Explorer API | zklink.io</a><br>
+        <a href="https://www.coincarp.com/currencies/zklink/richlist/" target="_blank">Top 100 zkLink Rich Address List | coincarp.com</a>
       </p>
-      <p style="font-size: 0.8rem; color: #777;">
+      <p class="info-text">
         <strong>Disclaimer</strong><br>
         The rankings and token balances shown on this site are fetched from external APIs and are provided for informational purposes only.<br>
-We do not guarantee the accuracy or completeness of this information.<br>
-Please verify any data before making decisions based on it.<br>
-The creator of this site is not responsible for any actions taken based on the information provided here.
+        I do not guarantee the accuracy or completeness of this information.<br>
+        Please verify any data before making decisions based on it.<br>
+        The creator of this site is not responsible for any actions taken based on the information provided here.
       </p>
       <p>Created by <a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
     </div>
@@ -158,7 +61,7 @@ The creator of this site is not responsible for any actions taken based on the i
           <td>${addressContent}</td>
           <td>${item.balance}</td>
         `;
-        
+
         tableBody.appendChild(row);
       });
     }
