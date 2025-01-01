@@ -16,8 +16,8 @@ const addressLabels = {
   '0x223e33eBBD7005D5a7C6ef4BAA35eBd74C691D79': 'Team & Advisors',
   '0x262cac775BBe38f161275B5d25bD365B20a2Ed00': 'Early Private Purchasers',
   '0x2123f6d10B580BAf5Eb25a16Bf62F2782cc514C6': 'Liquidity Reserve',
-  '0xf89d7b9c864f589bbf53a82105107622b35eaa40': 'Bybit',
-  '0x0d0707963952f2fba59dd06f2b425ace40b492fe': 'gate.io'
+  '0xf89d7b9c864f589bbF53a82105107622B35EaA40': 'Bybit',
+  '0x0D0707963952f2fBA59dD06f2b425ace40b492Fe': 'gate.io'
 };
 
 // APIからデータを取得し、整形する

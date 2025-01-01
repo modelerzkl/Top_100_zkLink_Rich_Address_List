@@ -20,7 +20,7 @@
     }
 
     div {
-      width: 70%;
+      width: 65%;
       max-width: 1000px;
       text-align: left;
     }
@@ -56,6 +56,7 @@
       margin-top: 20px;
       font-size: 0.9rem;
       color: #555;
+      width: 100%;
       text-align: center;
     }
 
@@ -68,6 +69,11 @@
       text-decoration: underline;
     }
 
+    .footer a {
+      display: inline-block;
+      margin: 5px 10px;
+    }
+
     @media (max-width: 768px) {
       h1 {
         font-size: 1.5rem;
@@ -75,6 +81,10 @@
 
       th, td {
         padding: 8px 10px;
+      }
+
+      .footer {
+        font-size: 0.8rem;
       }
     }
 
@@ -86,6 +96,10 @@
       th, td {
         font-size: 0.8rem;
         padding: 6px 8px;
+      }
+
+      .footer {
+        font-size: 0.75rem;
       }
     }
   </style>
@@ -106,23 +120,33 @@
       </tbody>
     </table>
     <div class="footer">
+      <p>
+        <a href="https://www.coincarp.com/currencies/zklink/richlist/" target="_blank">Top 100 Richest zkLink Addresses [Ethereum] | CoinCarp</a> |
+        <a href="https://explorer-api.zklink.io/docs#/" target="_blank">Block explorer API</a> |
+        <a href="https://zk.link/governance" target="_blank">zkLink Treasury</a>
+      </p>
+      <p style="font-size: 0.8rem; color: #777;">
+        <strong>Disclaimer:</strong><br>
+        The rankings and token balances shown on this site are fetched from external APIs and are provided for informational purposes only.<br>
+We do not guarantee the accuracy or completeness of this information.<br>
+Please verify any data before making decisions based on it.<br>
+The creator of this site is not responsible for any actions taken based on the information provided here.
+      </p>
       <p>Created by <a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
     </div>
   </div>
 
   <script>
-    // Fetch data from the server and populate the table
     async function fetchBalances() {
       const response = await fetch('/get-balances');
       const balances = await response.json();
 
       const tableBody = document.querySelector('#balances-table tbody');
-      tableBody.innerHTML = ''; // Clear any existing rows
+      tableBody.innerHTML = '';
 
       balances.forEach(item => {
         const row = document.createElement('tr');
 
-        // Create row content, including label if it exists
         let addressContent = `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>`;
         if (item.label) {
           addressContent = `<strong>${item.label}</strong><br>${addressContent}`;
