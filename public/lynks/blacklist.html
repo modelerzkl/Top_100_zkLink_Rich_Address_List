@@ -114,9 +114,9 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // list.txtを読み込み
+    // blacklist.txtを読み込み
     $.ajax({
-        url: 'list.txt',
+        url: 'blacklist.txt',
         dataType: 'text',
         success: function(data) {
             $('#content').text(data);

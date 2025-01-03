@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova Lynks Holder Ranking Address List</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+    }
+
+    div {
+      width: 95%;
+      max-width: 1000px;
+      text-align: left;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-size: 1rem;
+    }
+
+    td {
+      font-size: 0.9rem;
+      word-break: break-word;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #555;
+      width: 100%;
+      text-align: center;
+    }
+
+    .info-text {
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .footer a {
+      display: inline-block;
+      margin: 5px 10px;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      th, td {
+        padding: 8px 10px;
+      }
+
+      .footer {
+        font-size: 0.8rem;
+      }
+
+      .info-text {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+
+      th, td {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+      }
+
+      .info-text {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Nova Lynks Holder Ranking Address List</h1>
+    <table id="lynks-table">
+      <thead>
+        <tr>
+          <th>Token ID<br>(some if multiple)</th>
+          <th>Ranking</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be inserted here -->
+      </tbody>
+    </table>
+    <div class="footer">
+      <p class="info-text">
+        <strong>Reference</strong><br>
+        <a href="https://thirdweb.com/zklink-nova" target="_blank">zkLink Nova: RPC and Chain Settings | thirdweb.com</a>
+      </p>
+      <p class="info-text">
+        <strong>Disclaimer</strong><br>
+        The rankings displayed on this site are fetched from external sources and are provided for informational purposes only.<br>
+        The creator of this site does not guarantee the accuracy or completeness.<br>
+        Use this information at your own risk, and make sure to verify any data before making decisions.<br>
+        The creator is not responsible for any actions, losses, or damages arising from the use of this site or its data.
+      </p>
+      <p>Created by<a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
+    </div>
+  </div>
+
+  <script>
+    async function fetchData() {
+      try {
+        // それぞれのファイルを非同期に読み込む
+        const tokenIdResponse = await fetch('token_id.txt');
+        const rankingResponse = await fetch('ranking.txt');
+        const totalResponse = await fetch('total.txt');
+        
+        if (!tokenIdResponse.ok || !rankingResponse.ok || !totalResponse.ok) {
+          throw new Error('One or more files failed to load.');
+        }
+
+        const tokenIds = await tokenIdResponse.text();
+        const rankings = await rankingResponse.text();
+        const totals = await totalResponse.text();
+        
+        const tokenIdLines = tokenIds.split('\n');
+        const rankingLines = rankings.split('\n');
+        const totalLines = totals.split('\n');
+
+        const data = [];
+
+        // 2643行目まで制限
+        const limit = Math.min(tokenIdLines.length, rankingLines.length, totalLines.length, 2643);
+
+        for (let i = 0; i < limit; i++) {
+          const tokenID = tokenIdLines[i];
+          const ranking = rankingLines[i];
+          const total = totalLines[i];
+          
+          // Token ID (some if multiple), Ranking, Total の情報をオブジェクトとして保持
+          data.push({
+            tokenID,
+            ranking,
+            total
+          });
+        }
+
+        return data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        alert('Error fetching data. Please try again later.');
+        return [];
+      }
+    }
+
+    async function displayData() {
+      const data = await fetchData();
+      
+      const tableBody = document.querySelector('#lynks-table tbody');
+      tableBody.innerHTML = '';
+
+      if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="3">No data available</td></tr>';
+        return;
+      }
+
+      // データをテーブルに表示
+      data.forEach(item => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td>${item.tokenID}</td>
+          <td><a href="https://explorer.zklink.io/address/${item.ranking}" target="_blank">${item.ranking}</a></td>
+          <td>${item.total}</td>
+        `;
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    displayData();
+  </script>
+</body>
+</html>
+
