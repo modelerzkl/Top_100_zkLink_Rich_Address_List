@@ -1,9 +1,0 @@
-<IfModule mod_rewrite.c>
-    Options +FollowSymLinks
-    RewriteEngine On
-
-    # /lynks/blacklist.html を /lynks/blacklist にリダイレクト
-    RewriteCond %{REQUEST_URI} ^/lynks/blacklist.html$
-    RewriteRule ^lynks/blacklist.html$ /lynks/blacklist [R=301,L]
-</IfModule>
-
