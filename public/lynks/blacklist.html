@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lynks Blacklist</title>
+
+    <!-- favicon.icoのリンクを追加 -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
     <style>
+        /* スタイルの内容はそのまま */
         body {
             font-family: Arial, sans-serif;
             background-color: #1a1a1a; /* ダークな背景 */
@@ -83,59 +86,4 @@
         }
     </style>
 </head>
-<body>
-
-<h1>Lynks Blacklist</h1>
-
-<div id="search-container">
-    <input type="text" id="search" placeholder="Search">
-    <button id="search-button">Search</button>
-</div>
-
-<div id="content-container">
-    <div id="content"></div>
-</div>
-
-<footer>
-    <p><strong>Reference</strong><br>
-    <a href="https://explorer.zklink.io/address/0xd6d05CBdb8A70d3839166926f1b14d74d9953A08#contract" target="_blank">getBlackList | zkLink Explorer</a></p>
-
-    <p><strong>Disclaimer</strong><br>
-    This site is created for the purpose of providing blacklist information and does not guarantee the accuracy or completeness of  the provided information.<br>
-    Users acknowledge and agree that any damages arising from the use of this site are their sole responsibility.<br>
-    The site assumes no responsibility for the contents of any external links or information provided on the site.</p>
-    <p>Created by <a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
-</footer>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    // list.txtを読み込み
-    $.ajax({
-        url: 'list.txt',
-        dataType: 'text',
-        success: function(data) {
-            $('#content').text(data);
-        },
-        error: function() {
-            $('#content').text('ファイル読み込みエラー');
-        }
-    });
-
-    // Search機能
-    $('#search-button').click(function() {
-        var searchTerm = $('#search').val().toLowerCase();
-        var contentText = $('#content').text().toLowerCase();
-
-        if (contentText.includes(searchTerm)) {
-            $('#content').html($('#content').text().replace(new RegExp(searchTerm, 'gi'), function(match) {
-                return "<span style='background-color: red; color: white;'>" + match + "</span>";
-            }));
-        } else {
-            alert('該当する結果はありません');
-        }
-    });
-</script>
-
-</body>
-</html>
 
