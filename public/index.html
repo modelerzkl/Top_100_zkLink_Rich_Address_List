@@ -120,12 +120,14 @@
 <body>
   <div>
     <h1>Top 100 zkLink Rich Address List - Updated Every Hour</h1>
+    <p><small><a href="lynks/ranking.html" target="_blank">Top 100 Nova Lynks Holders Address List</a></small></p>
     <table id="balances-table">
       <thead>
         <tr>
-          <th>Ranking</th>
+          <th>Number</th>
           <th>Address</th>
           <th>Balance</th>
+          <th>Percentage</th>
         </tr>
       </thead>
       <tbody>
@@ -146,7 +148,7 @@
         Please verify any data before making decisions based on it.<br>
         The creator of this site is not responsible for any actions taken based on the information provided here.
       </p>
-      <p>Created by<a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
+      <p>Created by <a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
     </div>
   </div>
 
@@ -161,16 +163,27 @@
       balances.forEach(item => {
         const row = document.createElement('tr');
 
-        let addressContent = `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>`;
+        // Address content, with optional label if provided
+        let address = `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>`;
         if (item.label) {
-          addressContent = `<strong>${item.label}</strong><br>${addressContent}`;
+          address = `<strong>${item.label}</strong><br>${address}`;
         }
 
-        row.innerHTML = `
-          <td>${item.Ranking}</td>
-          <td>${addressContent}</td>
-          <td>${item.balance}</td>
-        `;
+        // Keep commas in balance and format it with commas for display
+        const balance = item.balance;
+        const cleanedBalance = item.balance.replace(' ZKL', '');  // Remove ' ZKL' if present
+
+        // Total supply value directly in the formula
+        const totalSupply = 1000000000;  // Example total supply, replace as needed
+        const balanceValue = parseFloat(cleanedBalance.replace(/,/g, '') || 0);  // Remove commas for calculations
+        const percentage = (balanceValue / totalSupply) * 100;  // Calculate percentage based on balance
+
+        // Create a new row for each balance entry
+        row.innerHTML = 
+          `<td>${item.Ranking}</td>
+          <td>${address}</td>
+          <td>${balance}</td>
+          <td>${percentage.toFixed(2)}%</td>`;  <!-- Percentage rounded to two decimal places -->
 
         tableBody.appendChild(row);
       });
