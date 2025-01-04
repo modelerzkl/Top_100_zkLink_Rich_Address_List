@@ -135,6 +135,7 @@
     <div class="footer">
       <p class="info-text">
         <strong>Reference</strong><br>
+        <a href="https://explorer.zklink.io/address/0xd6d05CBdb8A70d3839166926f1b14d74d9953A08#contract" target="_blank">Contract: ownerOf, balanceOf | zkLink Explorer</a><br>
         <a href="https://thirdweb.com/zklink-nova" target="_blank">zkLink Nova: RPC and Chain Settings | thirdweb.com</a>
       </p>
       <p class="info-text">
@@ -170,8 +171,8 @@
 
         const data = [];
 
-        // 2643行目まで制限
-        const limit = Math.min(tokenIdLines.length, rankingLines.length, totalLines.length, 2643);
+        // 100行目まで制限
+        const limit = Math.min(tokenIdLines.length, rankingLines.length, totalLines.length, 100);
 
         for (let i = 0; i < limit; i++) {
           const tokenID = tokenIdLines[i];
