@@ -123,8 +123,9 @@
     <table id="lynks-table">
       <thead>
         <tr>
-          <th>Token ID<br>(some if multiple)</th>
           <th>Ranking</th>
+          <th>Token ID<br>(some if multiple)</th>
+          <th>Address</th>
           <th>Total</th>
         </tr>
       </thead>
@@ -145,44 +146,40 @@
         Use this information at your own risk, and make sure to verify any data before making decisions.<br>
         The creator is not responsible for any actions, losses, or damages arising from the use of this site or its data.
       </p>
-      <p>Created by<a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
+      <p>Created by <a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
     </div>
   </div>
 
   <script>
     async function fetchData() {
       try {
-        // それぞれのファイルを非同期に読み込む
         const tokenIdResponse = await fetch('token_id.txt');
-        const rankingResponse = await fetch('ranking.txt');
+        const addressResponse = await fetch('address.txt');
         const totalResponse = await fetch('total.txt');
         
-        if (!tokenIdResponse.ok || !rankingResponse.ok || !totalResponse.ok) {
+        if (!tokenIdResponse.ok || !addressResponse.ok || !totalResponse.ok) {
           throw new Error('One or more files failed to load.');
         }
 
         const tokenIds = await tokenIdResponse.text();
-        const rankings = await rankingResponse.text();
+        const addresss = await addressResponse.text();
         const totals = await totalResponse.text();
         
         const tokenIdLines = tokenIds.split('\n');
-        const rankingLines = rankings.split('\n');
+        const addressLines = addresss.split('\n');
         const totalLines = totals.split('\n');
 
         const data = [];
-
-        // 100行目まで制限
-        const limit = Math.min(tokenIdLines.length, rankingLines.length, totalLines.length, 100);
+        const limit = Math.min(tokenIdLines.length, addressLines.length, totalLines.length, 100);
 
         for (let i = 0; i < limit; i++) {
           const tokenID = tokenIdLines[i];
-          const ranking = rankingLines[i];
+          const address = addressLines[i];
           const total = totalLines[i];
-          
-          // Token ID (some if multiple), Ranking, Total の情報をオブジェクトとして保持
           data.push({
+            rank: i + 1, // Ranking: 1 to 100
             tokenID,
-            ranking,
+            address,
             total
           });
         }
@@ -197,25 +194,22 @@
 
     async function displayData() {
       const data = await fetchData();
-      
       const tableBody = document.querySelector('#lynks-table tbody');
       tableBody.innerHTML = '';
 
       if (data.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="3">No data available</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="4">No data available</td></tr>';
         return;
       }
 
-      // データをテーブルに表示
       data.forEach(item => {
         const row = document.createElement('tr');
-
         row.innerHTML = `
+          <td>${item.rank}</td>
           <td>${item.tokenID}</td>
-          <td><a href="https://explorer.zklink.io/address/${item.ranking}" target="_blank">${item.ranking}</a></td>
+          <td><a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a></td>
           <td>${item.total}</td>
         `;
-
         tableBody.appendChild(row);
       });
     }
