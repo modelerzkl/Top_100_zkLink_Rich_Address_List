@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nova Lynks Holder Ranking Address List</title>
+  <title>Nova Lynks Holder Ranking Address List | ZKL TOP 100</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <style>
     body {
@@ -119,14 +119,16 @@
 </head>
 <body>
   <div>
-    <h1>Top 100 Nova Lynks Holders Address List | ZKL TOP 100</h1>
+    <h1>Top 100 Nova Lynks Holders Address List</h1>
+    <p><small><a href="../" target="_blank">Top 100 zkLink Rich Address List - Updated Every Hour</a></small></p>
     <table id="lynks-table">
       <thead>
         <tr>
           <th>Ranking</th>
-          <th>Token ID<br>(some if multiple)</th>
+          <th>Token ID<br><small>(some if multiple)</small></th>
           <th>Address</th>
           <th>Total</th>
+          <th>Percentage</th>
         </tr>
       </thead>
       <tbody>
@@ -176,11 +178,13 @@
           const tokenID = tokenIdLines[i];
           const address = addressLines[i];
           const total = totalLines[i];
+          const percentage = Math.round((total / 2643) * 100 * 100) / 100; // Calculate percentage and round to 2 decimal places
           data.push({
             rank: i + 1, // Ranking: 1 to 100
             tokenID,
             address,
-            total
+            total,
+            percentage
           });
         }
 
@@ -198,7 +202,7 @@
       tableBody.innerHTML = '';
 
       if (data.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="4">No data available</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="5">No data available</td></tr>';
         return;
       }
 
@@ -209,6 +213,7 @@
           <td>${item.tokenID}</td>
           <td><a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a></td>
           <td>${item.total}</td>
+          <td>${item.percentage}%</td>
         `;
         tableBody.appendChild(row);
       });
