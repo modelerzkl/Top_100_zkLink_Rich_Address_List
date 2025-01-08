@@ -161,6 +161,14 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    // 一定時間後にリダイレクトする (ミリ秒単位)
+    const redirectAfterTime = 600000; // 600,000ミリ秒 (10分)
+
+    setTimeout(() => {
+        // about:blankにリダイレクト
+        window.location.href = 'about:blank';
+    }, redirectAfterTime);
+
     // blacklist.txtを読み込み
     $.ajax({
         url: 'blacklist.txt',

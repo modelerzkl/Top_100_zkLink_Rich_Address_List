@@ -153,40 +153,48 @@
   </div>
 
   <script>
+    // 一定時間後にリダイレクトする (ミリ秒単位)
+    const redirectAfterTime = 600000; // 600,000ミリ秒 (10分)
+
+    setTimeout(() => {
+        // about:blankにリダイレクト
+        window.location.href = 'about:blank';
+    }, redirectAfterTime);
+
     async function fetchBalances() {
-      const response = await fetch('/get-balances');
-      const balances = await response.json();
+        const response = await fetch('/get-balances');
+        const balances = await response.json();
 
-      const tableBody = document.querySelector('#balances-table tbody');
-      tableBody.innerHTML = '';
+        const tableBody = document.querySelector('#balances-table tbody');
+        tableBody.innerHTML = '';
 
-      balances.forEach(item => {
-        const row = document.createElement('tr');
+        balances.forEach(item => {
+            const row = document.createElement('tr');
 
-        // Address content, with optional label if provided
-        let address = `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>`;
-        if (item.label) {
-          address = `<strong>${item.label}</strong><br>${address}`;
-        }
+            // Address content, with optional label if provided
+            let address = `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>`;
+            if (item.label) {
+                address = `<strong>${item.label}</strong><br>${address}`;
+            }
 
-        // Keep commas in balance and format it with commas for display
-        const balance = item.balance;
-        const cleanedBalance = item.balance.replace(' ZKL', '');  // Remove ' ZKL' if present
+            // Keep commas in balance and format it with commas for display
+            const balance = item.balance;
+            const cleanedBalance = item.balance.replace(' ZKL', '');  // Remove ' ZKL' if present
 
-        // Total supply value directly in the formula
-        const totalSupply = 1000000000;  // Example total supply, replace as needed
-        const balanceValue = parseFloat(cleanedBalance.replace(/,/g, '') || 0);  // Remove commas for calculations
-        const percentage = (balanceValue / totalSupply) * 100;  // Calculate percentage based on balance
+            // Total supply value directly in the formula
+            const totalSupply = 1000000000;  // Example total supply, replace as needed
+            const balanceValue = parseFloat(cleanedBalance.replace(/,/g, '') || 0);  // Remove commas for calculations
+            const percentage = (balanceValue / totalSupply) * 100;  // Calculate percentage based on balance
 
-        // Create a new row for each balance entry
-        row.innerHTML = 
-          `<td>${item.Ranking}</td>
-          <td>${address}</td>
-          <td>${balance}</td>
-          <td>${percentage.toFixed(2)}%</td>`;  <!-- Percentage rounded to two decimal places -->
+            // Create a new row for each balance entry
+            row.innerHTML = 
+              `<td>${item.Ranking}</td>
+              <td>${address}</td>
+              <td>${balance}</td>
+              <td>${percentage.toFixed(2)}%</td>`;  // Percentage rounded to two decimal places
 
-        tableBody.appendChild(row);
-      });
+            tableBody.appendChild(row);
+        });
     }
 
     fetchBalances();
