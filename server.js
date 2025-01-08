@@ -18,8 +18,10 @@ const addressLabels = {
   '0x262cac775BBe38f161275B5d25bD365B20a2Ed00': 'Early Private Purchasers',
   '0x2123f6d10B580BAf5Eb25a16Bf62F2782cc514C6': 'Liquidity Reserve',
   '0xC407E348DC24d80201396864c588e0dec42a70FE': 'Liquidity Reserve2',
+  '0x1AB4973a48dc892Cd9971ECE8e01DcC7688f8F23': 'Bitget',
   '0xf89d7b9c864f589bbF53a82105107622B35EaA40': 'Bybit',
   '0x0D0707963952f2fBA59dD06f2b425ace40b492Fe': 'gate.io'
+
 };
 
 // APIからデータを取得し、整形する
