@@ -153,14 +153,6 @@
   </div>
 
   <script>
-    // 一定時間後にリダイレクトする (ミリ秒単位)
-    const redirectAfterTime = 600000; // 600,000ミリ秒 (10分)
-
-    setTimeout(() => {
-        // about:blankにリダイレクト
-        window.location.href = 'about:blank';
-    }, redirectAfterTime);
-
     async function fetchBalances() {
         const response = await fetch('/get-balances');
         const balances = await response.json();
