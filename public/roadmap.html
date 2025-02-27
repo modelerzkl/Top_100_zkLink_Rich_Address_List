@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>zkLink ホワイトペーパー(日本語訳) | ZKL TOP 100</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <style>
+    /* ベーススタイル */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: #121212;
+      color: #E0E0E0;
+      line-height: 1.6;
+    }
+    a {
+      color: #BB86FC;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* コンテナ */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    /* 見出し */
+    h1, h2, h3, h4, h5, h6 {
+      color: #FFFFFF;
+      line-height: 1.2;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+    h2 {
+      font-size: 1.75em;
+      margin-top: 1.5em;
+      margin-bottom: 0.75em;
+    }
+    h3 {
+      font-size: 1.5em;
+      margin-top: 1.5em;
+      margin-bottom: 0.75em;
+    }
+    p {
+      margin-bottom: 1em;
+    }
+    /* 表のスタイル */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+    }
+    th, td {
+      padding: 0.75em;
+      border: 1px solid #333;
+      text-align: left;
+    }
+    th {
+      background-color: #1E1E1E;
+    }
+    /* セクション毎の余白 */
+    section {
+      margin-bottom: 2em;
+    }
+    /* レスポンシブ対応 */
+    @media (max-width: 600px) {
+      body {
+        font-size: 16px;
+      }
+      .container {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 1.75em;
+      }
+      h2 {
+        font-size: 1.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- タイトル -->
+    <header>
+      <h1>zkLink: ゼロ知識技術に基づく集約ロールアップ・インフラストラクチャ</h1>
+    </header>
+
+    <!-- 概要 -->
+    <section id="abstract">
+      <h2>概要</h2>
+      <p>
+        新たなブロックチェーンネットワークの急増により、流動性の断片化が進み、複数ブロックチェーンにまたがるdApp（分散型アプリケーション）の展開が複雑化しています。クロスチェーン資産の安全な取引と相互運用性を実現するプラットフォームが存在しないため、dAppの大衆採用に向けた大きな課題が生じています。開発者は、各チェーンごとに異なるプログラミング言語やツールのために、dAppの展開に際して複雑な問題に直面しています。
+      </p>
+      <p>
+        これらの課題に対応するため、zkLinkはゼロ知識証明とマルチチェーン状態同期によりセキュリティを確保する集約ロールアップ・インフラストラクチャの開発に取り組んでいます。この仕組みにより、異なるLayer 1（L1）やLayer 2（L2）のエコシステムに分散するネイティブな暗号資産が統合され、dAppの複数チェーンにまたがる展開に伴う複雑さが大幅に簡略化されます。さらに、エコシステム全体で断片化している流動性を統合し、取引手数料を大幅に低減することを目指しています。
+      </p>
+    </section>
+
+    <!-- 1. はじめに -->
+    <section id="introduction">
+      <h2>1. はじめに</h2>
+      <p>
+        ブロックチェーン分野の急速な発展に伴い、Ethereum、Solana、AvalancheといったLayer 1ブロックチェーンや、Arbitrum、zkSync、StarknetなどのEthereum Layer 2ロールアップが存在する、マルチチェーン・マルチレイヤーの環境が出現しました。ユーザーはそれぞれのニーズに応じて、さまざまな暗号トークンを利用するために異なるL1チェーンやL2ロールアップ間を行き来しています。新たなチェーンやロールアップの普及は、世界中のクリプトユーザーに大きな価値を提供する一方で、エコシステムの断片化という予期せぬ課題も生み出しています。ユーザーにとっては、クロスチェーン取引に伴うコスト増加やセキュリティリスクが発生し、開発者にとっては、複数チェーンにまたがるdApp開発環境の複雑性が問題となります。
+      </p>
+    </section>
+
+    <!-- 2. zkLinkが解決する課題 -->
+    <section id="solution">
+      <h2>2. zkLinkが解決する課題</h2>
+      <p>
+        zkLinkは、クロスチェーン流動性の集約とマルチチェーンdApp展開の簡素化を実現するために、集約ロールアップ・インフラストラクチャを構築します。マルチチェーン状態同期により、接続された任意のチェーンから安全に流動性へアクセスできるようになり、ゼロ知識証明技術を活用することで、高スループット、低コストかつ安全な環境をdAppに提供します。
+      </p>
+      <h3>主な特徴</h3>
+      <ul>
+        <li><strong>ネイティブ資産の集約：</strong> zkLinkのインフラソリューションを利用するアプリケーションは、接続された各L1およびL2上のネイティブトークンへアクセスでき、ユーザーは統一されたユーザーインターフェース上でマルチチェーン資産を取引可能となります。</li>
+        <li><strong>低手数料と高いスケーラビリティ：</strong> zkLinkのモジュラーなスタックにより、エコシステム上に構築されるdAppは卓越したスケーラビリティを享受できます。ゼロ知識証明技術は実行コストを大幅に削減し、迅速なユーザーエクスペリエンスを提供します。</li>
+        <li><strong>最小限のセキュリティ前提：</strong> zkLinkインフラ上のすべての取引はゼロ知識証明による検証を経るため、第三者の資産ブリッジを介する必要がなく、クロスチェーン資産ブリッジに起因するリスクが排除されます。マルチチェーン状態同期は、オンチェーン取引の同期ハッシュを伝送することで実現され、不正な入金情報の送信などの悪意ある操作を防ぎます。</li>
+      </ul>
+      <p>
+        現在、zkLinkは以下の2つのプロダクトラインを展開しています。
+      </p>
+      <h3>zkLink Nova</h3>
+      <p>
+        zkLink Novaは、EthereumおよびそのLayer 2ロールアップ上に構築された、EVM互換の集約Layer 3ロールアップネットワークです。dApp開発者は、Nova上でSolidityによるスマートコントラクトをデプロイすることで、Ethereum、Arbitrum、zkSync、Lineaなど、統合されたネットワークの流動性およびネイティブ資産へ即時にアクセスできます。NovaはEthereumのセキュリティを継承しており、Ethereumスマートコントラクトを介してマルチチェーン状態同期を実現するzkLink Nexusソリューションを用いています。
+      </p>
+      <h3>zkLink X</h3>
+      <p>
+        zkLink Xは、カスタマイズされた高性能アプリケーション向けの集約ロールアップ・インフラストラクチャです。zkLink Xは、マルチチェーン展開の複雑性を抽象化するミドルウェアとして機能し、開発者に対して単一チェーン上で開発しているかのような感覚とマルチチェーン流動性へのアクセスを提供します。そのモジュラーアーキテクチャにより、例えばDA（データアベイラビリティ）ソリューションやマルチチェーン決済スキームなど、各種コンポーネントをカスタマイズ可能にしています。また、注文書型DEXなどの高性能金融アプリケーション向けに、低コストかつ高スループットなApp Rollupソリューションを実現する取引用専用のzkVMも提供します。
+      </p>
+    </section>
+
+    <!-- 2. zkLinkプロトコル設計 -->
+    <section id="protocol-design">
+      <h2>2. zkLinkプロトコル設計</h2>
+      <h3>2.1 プロトコル全体像</h3>
+      <p>
+        zkLinkプロトコルは、モジュラーアーキテクチャを採用した集約型ZKロールアップ・インフラストラクチャです。これにより、各コンポーネントやモジュールは容易に交換、アップグレード、または追加が可能となり、複数の専門的なブロックチェーンや技術を組み合わせることで柔軟性とスケーラビリティを実現しています。
+      </p>
+      <p>
+        zkLinkプロトコルは、以下の4層で構成されています。
+      </p>
+      <ul>
+        <li>決済層（Settlement Layer）</li>
+        <li>実行層（Execution Layer）</li>
+        <li>シーケンシング層（Sequencing Layer）</li>
+        <li>データアベイラビリティ層（DA Layer）</li>
+      </ul>
+      <p>
+        これらの4層は、カスタマイズされたロールアップ展開のために分離されており、特に決済層と実行層におけるソリューションがzkLinkプロトコルの核となる価値提案および革新点となっています。
+      </p>
+
+      <h3>2.2 決済層</h3>
+      <p>
+        従来のZKロールアップネットワークでは、単一のチェーン（通常はEthereum）が決済層として採用され、そこで証明の検証と取引の決済が行われます。決済層は、オフチェーン取引のセキュリティと整合性を維持する役割を担います。
+      </p>
+      <p>
+        zkLinkは、従来のZKロールアップアーキテクチャと異なり、複数ブロックチェーンと連携する「集約型ZKロールアップ」を提案します。ネイティブトークン資産を複数のL1およびL2から1つのプラットフォームに安全に集約するため、ユーザーの資産は各接続チェーン上にデプロイされたロールアップブリッジコントラクト内にロックされます。また、集約型ZKロールアップは、オンチェーン取引の同期ハッシュを用いたマルチチェーン状態同期により、不正な入金などの悪意ある操作を防ぎます。
+      </p>
+      <p>
+        zkLinkでは、ネットワーク統合要件に応じて、2種類の専用決済ソリューション「zkLink Nexus」と「zkLink Origin」を提供します。
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>ソリューション</th>
+            <th>対応ネットワーク</th>
+            <th>セキュリティ前提</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>zkLink Nexus</td>
+            <td>EthereumおよびそのL2</td>
+            <td>Ethereumと同等のセキュリティ</td>
+          </tr>
+          <tr>
+            <td>zkLink Origin</td>
+            <td>Ethereum、Alt-L1およびL2</td>
+            <td>シーケンサーとライトオラクルネットワークが悪意ある行為で共謀できないこと</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>2.2.1 集約型ZKロールアップの動作原理</h4>
+      <p>
+        集約型ZKロールアップのアーキテクチャでは、入金などのオンチェーン取引がリアルタイムでロールアップネットワークに転送され、最良のユーザーエクスペリエンスを実現します。しかし、各取引の最終的な確定は、ゼロ知識証明（ZKP）の検証結果とマルチチェーン状態同期に依存する新たな決済パラダイムにより達成されます。
+      </p>
+      <p>
+        最適な検証コストを実現するため、接続されたチェーンの中から1つのチェーンがプライマリチェーンとして指定され、そこでZKPの検証を行います。他のチェーンはセカンダリチェーンとしてZKP検証を実行する必要がなく、マルチチェーン状態同期により全チェーンで検証が完了したのと同等の効果が得られます。
+      </p>
+      <p>
+        従来のZKロールアップは、<strong>コミット</strong>、<strong>証明</strong>、<strong>実行</strong>の3段階で動作しますが、zkLinkの集約型ZKロールアップアーキテクチャでは、証明後に<strong>同期</strong>段階が追加されます。各段階は以下の通りです。
+      </p>
+      <ol>
+        <li><strong>コミット：</strong>シーケンサーがzk証明および取引バッチをプライマリチェーン上の検証コントラクトに提出します。</li>
+        <li><strong>証明：</strong>プライマリチェーン上のzkLinkコントラクトがzk証明の有効性を検証します。</li>
+        <li><strong>同期：</strong>セカンダリチェーンからの取引同期ハッシュが、安全なメッセージチャネルを通じてプライマリチェーンに転送され、オンチェーン取引と同期ハッシュの整合性が確認されると、バッチが確定し、そのバッチルートがセカンダリチェーンに送信され実行されます。</li>
+        <li><strong>決済実行：</strong>バッチルートとMerkle証明を受け取った後、資金引き出しが承認・実行されます。</li>
+      </ol>
+
+      <h4>2.2.2 Nexus: EthereumおよびそのL2上での決済</h4>
+      <p>
+        zkLink Nexus決済ソリューションは、EthereumおよびそのL2のみを接続します。Nexusは、Ethereumのセキュリティを継承したL2のマルチチェーン同期という新たなパラダイムを導入しています。マルチチェーン同期段階では、セカンダリチェーンからの取引同期ハッシュがEthereum L2の標準的なメッセージブリッジを介してプライマリチェーンに転送され、検証後、バッチルートがセカンダリチェーンへ送信されます。これにより、Ethereum上での有効性証明または詐欺証明を通じたL2の最終確定性と、追加のマルチチェーン状態同期が実現され、zkLink NexusはEthereumのセキュリティを継承します。
+      </p>
+
+      <h4>2.2.3 Origin: Ethereum、Alt-L1およびL2での決済</h4>
+      <p>
+        Nexusとは異なり、zkLink OriginはSolanaやAvalancheなどのAlt-L1に加え、EthereumおよびそのL2とも連携します。zkLink Originロールアップは、接続された各ネットワーク上で取引および状態遷移を決済し、いずれかのネットワークがzk-SNARKsの証明検証をサポートしていれば決済が成立します。Alt-L1とEthereum間の安全かつ迅速な通信のために、zkLinkはライトオラクルネットワークを導入しています。Originのセキュリティ前提は、取引バッチ化を担当するシーケンサーがライトオラクルネットワークの全ノードと共謀できないことにあります。
+      </p>
+
+      <h3>2.3 実行層</h3>
+      <p>
+        実行層では、状態の正しい更新を行うため、状態機械の遷移を正しく反映する有効な取引のみが実行されます。
+      </p>
+      <h4>2.3.1 取引用専用zkVM（TS-zkVM）による取引特化型dAppの実行環境</h4>
+      <p>
+        zkLinkの取引用専用zkVM（TS-zkVM）は、カスタマイズされた低レベルコアZK回路およびRisc0 zkVM拡張回路をベースに構築され、App Rollup開発者に対して高スループットかつ低コストな実行環境を提供します。TS-zkVMは、スポット取引、デリバティブ取引、NFT取引などの注文書型プロダクト機能に対応します。
+      </p>
+      <h4>2.3.2 普遍的なdApp向けzkEVM</h4>
+      <p>
+        zkLinkのモジュラーアーキテクチャにより、開発者はZK StackやPolygon CDKなどのオープンソースzkEVMフレームワークを利用して、独自のカスタマイズ可能なロールアップを構築する柔軟性を持ちます。zkLinkの集約ロールアップ・インフラを基盤とすることで、Solidityで記述されたApp Rollupが容易に構築され、複数ブロックチェーンやロールアップから集約された流動性へアクセスできます。zkLinkは、ZK StackをベースにzkLink Novaとして、EthereumおよびそのLayer 2ネットワークから集約流動性にアクセス可能なパーミッションレスな集約zkEVM Layer3ロールアップを構築しています。これにより、dAppはEthereumのセキュリティを継承しつつ、幅広い流動性へアクセスできます。
+      </p>
+
+      <h3>2.4 シーケンシング層</h3>
+      <p>
+        シーケンシング層は、ユーザー取引の受信、順序決定、バッチへのまとめを担当し、決済層へのコミットや外部DA層へのデータ伝送を行います。zkLinkは初期段階で中央集権的なシーケンサーを採用していますが、Espresso、Astria、Fairblockといった分散型シーケンサーの導入を目指し、ネットワークのセキュリティと透明性を向上させる計画です。
+      </p>
+
+      <h3>2.5 データアベイラビリティ層（DA層）</h3>
+      <p>
+        データアベイラビリティ（DA）は、取引データを常に再構成可能な状態で利用できるようにする仕組みです。ロールアップが予期せず停止した場合に状態を再構築できる能力を確保するため、DA層は重要な役割を果たします。
+      </p>
+      <ul>
+        <li>プライマリチェーンをDA層としてサポート</li>
+        <li>Validiumモードで外部DAソリューション（Celestia、EigenDA、Avail等）と統合可能</li>
+        <li>zkLink DAOによるデータアベイラビリティ委員会（DAC）の編成も選択肢として提供</li>
+      </ul>
+    </section>
+
+    <!-- 3. zkLink Nova: 業界初の集約Layer3ロールアップネットワーク -->
+    <section id="zklink-nova">
+      <h2>3. zkLink Nova：業界初の集約Layer3ロールアップネットワーク</h2>
+      <h3>3.1 zkLink Novaの概要</h3>
+      <p>
+        zkLink Novaは、EthereumおよびEthereum Layer 2ロールアップ上に構築された、業界初の集約Layer3 zkEVMロールアップネットワークです。ZK StackのzkEVMをベースにしているためEVM互換性を有し、あらゆる種類のスマートコントラクトのシンプルかつ迅速な開発を可能にするオープンプラットフォームを提供します。zkLink Novaは、Ethereum Layer 2上に分散する資産を集約し、相互運用可能な取引を実現します。Novaはゼロ知識証明技術によりセキュリティが担保され、低ガスコスト、迅速な最終確定性、そしてzkLink Nexusソリューションを通じたEthereumのセキュリティ継承を実現しています。
+      </p>
+      <h3>3.2 zkLink Novaの主要な特徴</h3>
+      <h4>3.2.1 ネイティブ資産の集約</h4>
+      <p>
+        ユーザーはEthereum Layer 1およびEthereum Layer 2から直接zkLink Novaに資産を入金できます。これらの資産は、ソースチェーン上のロールアップブリッジコントラクトにロックされ、Nova上のアプリケーションは接続された各Layer 2のネイティブトークンへアクセスでき、マルチチェーン資産の相互運用的な取引が可能となります。
+      </p>
+      <h4>3.2.2 普遍的なdAppのサポート</h4>
+      <p>
+        zkLink NovaはZK StackのzkEVMを活用してEVM互換性を実現し、DEX、レンディング、GameFi、SocialFiなどあらゆる種類のSolidityスマートコントラクトをオープンプラットフォーム上で展開可能です。これにより、Arbitrum、zkSync、Lineaなど、統合されたネットワークの流動性およびネイティブ資産へ即時にアクセスできます。
+      </p>
+      <h4>3.2.3 サポートネットワークに対するスタック非依存性</h4>
+      <p>
+        zkLink Novaは、ZKロールアップ、Optimisticロールアップなど、異なる技術スタックで構築されたロールアップとも接続可能なスタック非依存の設計となっています。これにより、Ethereumエコシステム全体から最も広範な流動性が集約されます（ただし、クロスロールアップ取引のアトミックな相互運用性は犠牲となる場合があります）。
+      </p>
+      <h4>3.2.4 低手数料と高いスケーラビリティ</h4>
+      <p>
+        zkLink Novaのモジュラーなスタックにより、上に構築されるdAppは最大限のスケーラビリティを享受できます。実行層としてZK Stackを採用することで実行コストが大幅に削減され、迅速なユーザーエクスペリエンスが実現されます。さらに、Validiumモードでは外部DAソリューションを利用することで、取引データ部分のコストも低減されます。
+      </p>
+      <h4>3.2.5 Ethereumと同等のセキュリティ</h4>
+      <p>
+        zkLink Novaは、zkLink Nexus決済層ソリューションを通じてEthereumに直接決済することにより、Ethereumのセキュリティを継承しています。全取引はまずゼロ知識証明による検証を経た後、標準ロールアップブリッジを介してマルチチェーン状態同期が行われ、オンチェーン取引との整合性が保証されます。
+      </p>
+    </section>
+
+    <!-- 4. zkLink X: アプリケーション固有の集約ロールアップ・インフラストラクチャ -->
+    <section id="zklink-x">
+      <h2>4. zkLink X：アプリケーション固有の集約ロールアップ・インフラストラクチャ</h2>
+      <h3>4.1 zkLink Xの概要</h3>
+      <p>
+        zkLink Xは、各アプリケーションが独自の主権を持つアプリケーションロールアップを構築するためのモジュラーインフラストラクチャを提供します。zkLink Xを利用するApp Rollupは、接続されたL1およびL2上のネイティブトークンへアクセスでき、統一されたユーザーインターフェース上でマルチチェーン資産の取引が可能です。クロスチェーン資産ブリッジが不要なため、ブリッジに伴うリスクや手数料が回避されます。
+      </p>
+      <p>
+        zkLink Xはロールアップフレームワークの4層（決済、実行、シーケンサー、DA）を分離し、SDKおよびAPIを用いた迅速かつカスタマイズ可能なロールアップ展開を実現します。開発者は、ネットワーク統合・決済層、実行環境、シーケンサー、DAソリューションなど、必要なコンポーネントを自由に選択できます。特に、決済層（NexusおよびOriginソリューション）と実行層（TS-zkVM）に重点を置き、その他の層はサードパーティ製ソリューションと統合して対応します。
+      </p>
+      <h3>4.2 高性能DEX向け取引用zkVM</h3>
+      <p>
+        zkLinkが開発したTS-zkVMは、CLOB型DEXなど高性能金融プロダクト向けに特化した高効率なZKP実行環境です。事前コンパイル回路とrisc0 zkVM拡張回路を統合し、以下のサブレイヤーから構成されます。
+      </p>
+      <h4>4.2.1 TS-zkVMのストレージサブレイヤー</h4>
+      <p>
+        TS-zkVMはSparse Merkle Tree（SMT）を用いて状態管理を行い、状態変化の効率的かつ安全な管理・検証を実現します。従来のEVMのSMTに比べ、専用に最適化されたSMTは高頻度金融取引シナリオに適応しています。
+      </p>
+      <h4>4.2.2 TS-zkVMの実行サブレイヤー</h4>
+      <p>
+        実行サブレイヤーは、以下の2部に分かれます：
+      </p>
+      <ul>
+        <li>
+          <strong>事前コンパイル回路：</strong> 入金、出金、送金、スポット取引、デリバティブ取引、デリバティブ管理（清算、ADL、ファンディング）、オラクル検証、認証回路（パスキー検証、ソーシャルログイン検証）など、各金融取引に特化した回路を最適化。
+        </li>
+        <li>
+          <strong>拡張回路：</strong> 同一SMT上でrisc0 zkVMを用い、グリッド取引、オプション取引、ブローカー取引などのカスタム取引ロジックを実装可能。専用SDKも提供され、Merkle証明の検証等の一般的な操作がサポートされます。
+        </li>
+      </ul>
+      <h4>4.2.3 TS-zkVMのZK証明集約サブレイヤー</h4>
+      <p>
+        集約サブレイヤーは、各取引証明を集約し、バッチ全体の正当性を検証するための証明を生成します。構成は以下の通りです：
+      </p>
+      <ul>
+        <li><strong>事前コンパイルモジュール：</strong> 取引用に特化した事前コンパイル回路を検証キー（vk）にコンパイル。</li>
+        <li><strong>SMT状態遷移回路：</strong> SMTを用いて状態記録および各状態遷移の正当性を検証。</li>
+        <li><strong>zkVM：</strong> 取引用DSL契約を展開し、カスタム取引オペレーションの証明生成を実現。</li>
+        <li><strong>PLONK集約器：</strong> 各証明の整合性を検証し、集約証明を生成。</li>
+        <li><strong>各種証明：</strong> 事前コンパイル証明、遷移証明、zkVM証明。</li>
+      </ul>
+    </section>
+
+    <!-- 5. トークノミクス -->
+    <section id="tokenomics">
+      <h2>5. トークノミクス</h2>
+      <p>
+        ZKLはEthereumメインネット上に発行される標準ERC20トークンで、総供給量は10億枚に固定され、インフレはありません。また、zkLink Novaネットワーク上でも利用可能です。
+      </p>
+      <p>
+        ZKLはzkLinkプロトコルのネイティブユーティリティおよびガバナンストークンとして機能します。ユーティリティ面では、zkLink XのApp Rollupインフラサービスへのアクセスやゼロ知識証明計算リソースの支払いに使用され、ガバナンス面ではzkLink DAOの開発方針に対する意思決定に参加できます。将来的には、zkLink Novaの分散型シーケンシングネットワークへの参加権も付与されます。
+      </p>
+      <h3>5.1 支払い</h3>
+      <p>
+        zkLink Xを利用するApp Rollupは、ライセンス料としてZKLをzkLink DAOに支払い、DAOは初期のライセンス料補助としてスタートアップにZKLを提供します。さらに、ZKLはゼロ知識証明生成サービスの支払いトークンとしても機能し、プローバーは証明オークション市場で入札し、タスク完了によりZKLを獲得、一定量のZKLのステーキングが必要となります。
+      </p>
+      <h3>5.2 ガバナンス</h3>
+      <p>
+        ZKLはzkLinkプロトコルのガバナンストークンであり、保有者はステーキングにより得られるveZKLを通じて、DAOの意思決定に参加します。現状では、zkLink Novaの収益は中央集権型シーケンサーから直接zkLink DAOボールトへ流入しますが、将来的にはZKL保有者に分散型シーケンシングネットワークへの参加権が付与されます。
+      </p>
+      <h3>5.3 zkLink Novaネットワークのオプショナルガストークン</h3>
+      <p>
+        zkLink NovaのネイティブガストークンはETHですが、Nova上で取引を行う際に、ユーザーは割引料金でZKLを使用してガス代を支払うオプションも選択できます。
+      </p>
+    </section>
+
+    <!-- 6. 結論 -->
+    <section id="conclusion">
+      <h2>6. 結論</h2>
+      <p>
+        本論文では、ゼロ知識技術に基づく分散型集約ロールアップ・インフラストラクチャであるzkLinkプロトコルの概念設計およびシステム構造について述べました。zkLinkは、流動性の断片化、相互運用性の欠如、高い取引コスト、そしてマルチチェーン展開の複雑性といった課題に対し、zk-SNARKs技術とマルチチェーン状態同期を用いた新たな集約ロールアップ・フレームワークで解決を図ります。
+      </p>
+      <p>
+        zkLinkの集約ロールアップ・インフラを基盤とし、zkLink NovaはEthereum、ZKロールアップ、Optimisticロールアップを含むEthereumエコシステム全体から集約流動性にアクセス可能な、業界初の集約Layer3 zkEVMロールアップネットワークとして構築されています。一方、特定の高性能アプリケーション向けに独自の主権が必要な場合、zkLink Xは、マルチチェーン展開の複雑性を抽象化し、単一チェーン上で開発しているかのような感覚とマルチチェーン流動性へのアクセスを提供するミドルウェア・インフラストラクチャを実現します。また、TS-zkVMは、CLOB型DEXやNFT取引など、高性能かつ低コストな金融プロダクト向けに特化した実行環境として、ゼロ知識証明の効率的な活用を促進し、セルフカストディアルでユーザーフレンドリーなDeFiプロダクトの大衆採用に貢献します。
+      </p>
+    </section>
+
+    <!-- 用語集 -->
+    <section id="glossary">
+      <h2>用語集</h2>
+      <ul>
+        <li><strong>ZKP：</strong> ゼロ知識証明</li>
+        <li><strong>L1：</strong> Ethereum、Solana、Avalanche、BNB ChainなどのLayer 1ブロックチェーン</li>
+        <li><strong>L2：</strong> zkSync、Starknet、Arbitrum、OptimismなどのEthereum Layer 2ロールアップネットワーク</li>
+        <li><strong>L3：</strong> L2上に構築されたロールアップネットワーク</li>
+        <li><strong>TS-zkVM：</strong> 取引用専用の実行ランタイム（カスタマイズされた低レベルコアZK回路とオープンソースzkVM拡張回路を基にzkLinkが開発）</li>
+        <li><strong>zkLink Nexus：</strong> Ethereum L2を接続するマルチロールアップ型Layer3 ZKロールアップアーキテクチャ</li>
+        <li><strong>zkLink Origin：</strong> 各種L1およびL2を接続するマルチチェーン型ZKロールアップアーキテクチャ</li>
+        <li><strong>zkLink App Rollup：</strong> zkLinkが提供するロールアップ・インフラソリューションに基づき、高スループット・低取引コストを求める開発者向けのアプリケーション固有ロールアップネットワーク</li>
+      </ul>
+    </section>
+
+    <!-- 参考文献 -->
+    <section id="references">
+      <h2>参考文献</h2>
+      <ol>
+        <li><a href="https://docs.celestia.org/developers/build-modular" target="_blank" rel="noopener">Celestia 開発者向けドキュメント</a></li>
+        <li><a href="https://docs.espressosys.com/sequencer/espresso-sequencer-architecture/readme" target="_blank" rel="noopener">Espresso シーケンサーアーキテクチャ</a></li>
+        <li><a href="https://docs.polygon.technology/cdk/" target="_blank" rel="noopener">Polygon CDK ドキュメント</a></li>
+        <li><a href="https://docs.zklink.io/" target="_blank" rel="noopener">zkLinkドキュメント</a></li>
+        <li><a href="https://docs.zk.link/" target="_blank" rel="noopener">zkLink公式サイト</a></li>
+        <li><a href="https://era.zksync.io/zk-stack" target="_blank" rel="noopener">zkSyncのZK Stack</a></li>
+        <li><a href="https://layerzero.network/publications/LayerZero_Whitepaper_V2.0.pdf" target="_blank" rel="noopener">LayerZero Whitepaper V2.0</a></li>
+      </ol>
+    </section>
+    
+    <!-- フッター -->
+    <footer>
+      <p style="text-align: center; font-size: 0.9em; margin-top: 2em;">
+         翻訳元: <a href="https://zk.link/zkLink-whitepaper.pdf" target="_blank" rel="noopener">zkLink Whitepaper</a>
+      </p>
+      <center><a href="index.html" target="_blank">トップページへ戻る</a></center>
+    </footer>
+  </div>
+</body>
+</html>
+
