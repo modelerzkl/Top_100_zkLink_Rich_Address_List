@@ -175,7 +175,7 @@
             const cleanedBalance = item.balance.replace(' ZKL', '');  // Remove ' ZKL' if present
 
             // Total supply value directly in the formula
-            const totalSupply = 1000000000;  // Example total supply, replace as needed
+            const totalSupply = 1000000000; 
             const balanceValue = parseFloat(cleanedBalance.replace(/,/g, '') || 0);  // Remove commas for calculations
             const percentage = (balanceValue / totalSupply) * 100;  // Calculate percentage based on balance
 
@@ -184,7 +184,7 @@
               `<td>${item.Ranking}</td>
               <td>${address}</td>
               <td>${balance}</td>
-              <td>${percentage.toFixed(4)}%</td>`;  // Percentage rounded to two decimal places
+              <td>${percentage.toFixed(3)}%</td>`;  // Percentage rounded to two decimal places
 
             tableBody.appendChild(row);
         });
