@@ -6,7 +6,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-  
     gtag('config', 'G-GSQPQG7YKX');
   </script>
   <meta charset="UTF-8">
@@ -26,40 +25,33 @@
       text-align: center;
       min-height: 100vh;
     }
-
     div {
       width: 95%;
       max-width: 1000px;
       text-align: left;
     }
-
     h1 {
       font-size: 1.8rem;
       margin-bottom: 20px;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
     }
-
     th, td {
       padding: 10px 12px;
       text-align: left;
       border-bottom: 1px solid #ddd;
     }
-
     th {
       background-color: #f2f2f2;
       font-size: 1rem;
     }
-
     td {
       font-size: 0.9rem;
       word-break: break-word;
     }
-
     .footer {
       margin-top: 20px;
       font-size: 0.9rem;
@@ -67,61 +59,32 @@
       width: 100%;
       text-align: center;
     }
-
     .info-text {
       font-size: 0.9rem;
       color: #777;
     }
-
     a {
       color: #007bff;
       text-decoration: none;
     }
-
     a:hover {
       text-decoration: underline;
     }
-
     .footer a {
       display: inline-block;
       margin: 5px 10px;
     }
-
     @media (max-width: 768px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      th, td {
-        padding: 8px 10px;
-      }
-
-      .footer {
-        font-size: 0.8rem;
-      }
-
-      .info-text {
-        font-size: 0.8rem;
-      }
+      h1 { font-size: 1.5rem; }
+      th, td { padding: 8px 10px; }
+      .footer { font-size: 0.8rem; }
+      .info-text { font-size: 0.8rem; }
     }
-
     @media (max-width: 480px) {
-      h1 {
-        font-size: 1.2rem;
-      }
-
-      th, td {
-        font-size: 0.8rem;
-        padding: 6px 8px;
-      }
-
-      .footer {
-        font-size: 0.75rem;
-      }
-
-      .info-text {
-        font-size: 0.75rem;
-      }
+      h1 { font-size: 1.2rem; }
+      th, td { font-size: 0.8rem; padding: 6px 8px; }
+      .footer { font-size: 0.75rem; }
+      .info-text { font-size: 0.75rem; }
     }
   </style>
 </head>
@@ -137,6 +100,7 @@
           <th>Address</th>
           <th>Quantity</th>
           <th>Percentage</th>
+          <th>Value</th>
         </tr>
       </thead>
       <tbody>
@@ -160,44 +124,44 @@
       <p>Created by <a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
     </div>
   </div>
-
   <script>
+    // 現在のZKL価格（USD）をCoinGeckoから取得する関数
+    async function fetchCurrentPrice() {
+      try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=zklink&vs_currencies=usd');
+        const data = await response.json();
+        return data.zklink.usd;
+      } catch (error) {
+        console.error("Error fetching current price:", error);
+        return 0;
+      }
+    }
     async function fetchBalances() {
+        const currentPrice = await fetchCurrentPrice();
         const response = await fetch('/get-balances');
         const balances = await response.json();
-
         const tableBody = document.querySelector('#balances-table tbody');
         tableBody.innerHTML = '';
-
         balances.forEach(item => {
             const row = document.createElement('tr');
-
-            // Address content, with optional label if provided
             let address = `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>`;
             if (item.label) {
                 address = `<strong>${item.label}</strong><br>${address}`;
             }
-
-            // Keep commas in balance and format it with commas for display
-            const balance = item.balance;
-            const cleanedBalance = item.balance.replace(' ZKL', '');  // Remove ' ZKL' if present
-
-            // Total supply value directly in the formula
-            const totalSupply = 1000000000; 
-            const balanceValue = parseFloat(cleanedBalance.replace(/,/g, '') || 0);  // Remove commas for calculations
-            const percentage = (balanceValue / totalSupply) * 100;  // Calculate percentage based on balance
-
-            // Create a new row for each balance entry
+            const cleanedBalance = item.balance.replace(' ZKL', '').replace(/,/g, '');
+            const balanceValue = parseFloat(cleanedBalance) || 0;
+            const totalSupply = 1000000000;
+            const percentage = (balanceValue / totalSupply) * 100;
+            const value = balanceValue * currentPrice;
             row.innerHTML = 
               `<td>${item.Ranking}</td>
               <td>${address}</td>
-              <td>${balance}</td>
-              <td>${percentage.toFixed(4)}%</td>`;  // Percentage rounded to two decimal places
-
+              <td>${item.balance}</td>
+              <td>${percentage.toFixed(4)}%</td>
+              <td>$${value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
             tableBody.appendChild(row);
         });
     }
-
     fetchBalances();
   </script>
 </body>
