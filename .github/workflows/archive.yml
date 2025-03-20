@@ -2,7 +2,7 @@ name: Archive Website via Wayback Machine
 
 on:
   schedule:
-    # 毎日UTC 00:00に実行
+    # 毎日UTC+0に実行
     - cron: '0 0 * * *'
   workflow_dispatch:  # 手動実行用のオプション
 
