@@ -1,0 +1,18 @@
+name: Archive Website via Wayback Machine
+
+on:
+  schedule:
+    # 毎日UTC 00:00に実行
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # 手動実行用のオプション
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send archive request to Wayback Machine
+        run: |
+          SITE_URL="https://zkltop100.net"
+          # Wayback Machine に保存リクエストを送信
+          curl -s "https://web.archive.org/save/${SITE_URL}" -o /dev/null
+
