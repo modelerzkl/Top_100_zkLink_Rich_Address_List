@@ -130,7 +130,7 @@
           <th>Address</th>
           <th>Total</th>
           <th>Percentage</th>
-          <th>Value (Total * 833)</th>
+          <th>Quantity (Total * 833)</th>
         </tr>
       </thead>
       <tbody>
@@ -181,16 +181,16 @@
           const address = addressLines[i];
           const total = totalLines[i];
           const percentage = Math.round((total / 2643) * 100 * 100) / 100; // Calculate percentage and round to 2 decimal places
-          const value = (total * 833).toFixed(2); // Calculate the value
-          const valueWithComma = Number(value).toLocaleString(); // Add comma to value
-          const valueWithZKL = `${valueWithComma} ZKL`; // Add "ZKL" text to value
+          const quantity = (total * 833).toFixed(2); // Calculate the quantity
+          const quantityWithComma = Number(quantity).toLocaleString(); // Add comma to quantity
+          const quantityWithZKL = `${quantityWithComma} ZKL`; // Add "ZKL" text to quantity
           data.push({
             rank: i + 1, // Ranking: 1 to 100
             tokenID,
             address,
             total,
             percentage,
-            value: valueWithZKL
+            quantity: quantityWithZKL
           });
         }
 
@@ -220,7 +220,7 @@
           <td><a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a></td>
           <td>${item.total}</td>
           <td>${item.percentage}%</td>
-          <td>${item.value}</td>
+          <td>${item.quantity}</td>
         `;
         tableBody.appendChild(row);
       });
