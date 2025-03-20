@@ -29,7 +29,7 @@ app.get('/get-balances', async (req, res) => {
   try {
     const response = await axios.get(apiUrl);
     const balances = response.data.map(item => {
-      const formattedBalance = Math.floor(item.balance).toLocaleString();
+      const formattedBalance = parseFloat(item.balance).toFixed(2);
       item.balance = formattedBalance + ' ZKL';
       
       // アドレスに対応するラベルを追加し、" :"を付け加える

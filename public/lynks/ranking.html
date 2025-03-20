@@ -127,7 +127,7 @@
         <tr>
           <th>Rank</th>
           <th>Token ID<br><small>(some if multiple)</small></th>
-          <th>Address</th>
+          <th>zkLink Nova Mainnet Address</th>
           <th>Total</th>
           <th>Percentage</th>
           <th>Quantity (Total * 833)</th>
@@ -141,7 +141,8 @@
       <p class="info-text">
         <strong>Reference</strong><br>
         <a href="https://explorer.zklink.io/address/0xd6d05CBdb8A70d3839166926f1b14d74d9953A08#contract" target="_blank">Contract: ownerOf, balanceOf | zkLink Explorer</a><br>
-        <a href="https://thirdweb.com/zklink-nova" target="_blank">zkLink Nova: RPC and Chain Settings | thirdweb.com</a>
+        <a href="https://thirdweb.com/zklink-nova" target="_blank">zkLink Nova: RPC and Chain Settings | thirdweb.com</a><br>
+        <a href="https://www.coingecko.com/en/coins/zklink" target="_blank">zkLink Price | CoinGecko(API)</a>
       </p>
       <p class="info-text">
         <strong>Disclaimer</strong><br>
@@ -155,6 +156,26 @@
   </div>
 
   <script>
+    // 現在のZKL価格（USD）をCoinGeckoから取得する関数
+    async function fetchCurrentPrice() {
+      try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=zklink&vs_currencies=usd');
+        const data = await response.json();
+        return data.zklink.usd;
+      } catch (error) {
+        console.error("Error fetching current price:", error);
+        return 0;
+      }
+    }
+
+    // ZKL価格を取得してタイトルを更新
+    async function updateTitleWithPrice() {
+      const currentPrice = await fetchCurrentPrice();
+      const title = `ZKL $${currentPrice.toFixed(3)} | Nova Lynks Holder Ranking Address List | ZKL TOP 100`;
+      document.title = title;
+    }
+    updateTitleWithPrice(); // タイトルを更新する関数を実行
+
     async function fetchData() {
       try {
         const tokenIdResponse = await fetch('token_id.txt');

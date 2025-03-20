@@ -97,7 +97,7 @@
       <thead>
         <tr>
           <th>Rank</th>
-          <th>Address</th>
+          <th>zkLink Nova Mainnet Address</th>
           <th>Quantity</th>
           <th>Percentage</th>
           <th>Value</th>
@@ -112,7 +112,8 @@
         <strong>Reference</strong><br>
         <a href="https://zk.link/governance" target="_blank">zkLink Treasury | zk.link</a><br>
         <a href="https://explorer-api.zklink.io/docs#/" target="_blank">zkLink Nova Block Explorer API | zklink.io</a><br>
-        <a href="https://etherscan.io/token/0xfc385a1df85660a7e041423db512f779070fcede#balances" target="_blank">ZKLink (ZKL) Token Tracker | Etherscan</a>
+        <a href="https://etherscan.io/token/0xfc385a1df85660a7e041423db512f779070fcede#balances" target="_blank">ZKLink (ZKL) Token Tracker | Etherscan</a><br>
+        <a href="https://www.coingecko.com/en/coins/zklink" target="_blank">zkLink Price | CoinGecko(API)</a>
       </p>
       <p class="info-text">
         <strong>Disclaimer</strong><br>
@@ -136,6 +137,15 @@
         return 0;
       }
     }
+
+    // ZKL価格を取得してタイトルを更新
+    async function updateTitleWithPrice() {
+      const currentPrice = await fetchCurrentPrice();
+      const title = `ZKL $${currentPrice.toFixed(3)} | Top 100 zkLink Rich Address List - Updated Every Hour`;
+      document.title = title;
+    }
+    updateTitleWithPrice(); // タイトルを更新する関数を実行
+
     async function fetchBalances() {
         const currentPrice = await fetchCurrentPrice();
         const response = await fetch('/get-balances');
@@ -149,7 +159,7 @@
                 address = `<strong>${item.label}</strong><br>${address}`;
             }
             const cleanedBalance = item.balance.replace(' ZKL', '').replace(/,/g, '');
-            const balanceValue = parseFloat(cleanedBalance) || 0;
+            const balanceValue = cleanedBalance;
             const totalSupply = 1000000000;
             const percentage = (balanceValue / totalSupply) * 100;
             const value = balanceValue * currentPrice;
