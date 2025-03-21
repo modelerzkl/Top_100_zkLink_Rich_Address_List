@@ -134,9 +134,9 @@
         color: #BBBBBB;
       }
       td:not(:last-child) { margin-bottom: 8px; }
-td[data-label="Rank"]::before {
-  width: 50px;
-}
+      td[data-label="Rank"]::before {
+        width: 50px;
+      }
       td[data-label="Address"] {
         text-align: left !important;
       }
@@ -156,8 +156,29 @@ td[data-label="Rank"]::before {
       text-align: center;
       line-height: 1.4;
     }
-    .footer a { display: inline-block; margin: 5px 10px; }
-    .info-text { margin-bottom: 15px; }
+    .footer a { display: inline-block; margin: 5px 5px; }
+    .info-text { margin-bottom: 10px; }
+
+    /* Adjusting the spacing for 'Created by' section */
+    .footer p:last-child {
+      margin-top: 10px;
+    }
+
+    /* モバイル向け調整 */
+    @media (max-width: 768px) {
+      .footer {
+        font-size: 0.75rem;
+        margin-top: 20px;
+      }
+
+      .footer p {
+        margin-bottom: 5px;
+      }
+
+      .footer p:last-child {
+        margin-top: 5px;
+      }
+    }
   </style>
 </head>
 <body>
