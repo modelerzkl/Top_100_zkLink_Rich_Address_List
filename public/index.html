@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 100 zkLink Rich Address List - Updated Every Hour</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GSQPQG7YKX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -8,104 +13,181 @@
     gtag('js', new Date());
     gtag('config', 'G-GSQPQG7YKX');
   </script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top 100 zkLink Rich Address List - Updated Every Hour | ZKL TOP 100</title>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    /* ベースリセット＆フォント */
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      background-color: #f9f9f9;
+    }
+    html { scroll-behavior: smooth; }
+    /* 通常テキストをやや明るいグレーに、見出しは白に */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #121212;
+      color: #CCCCCC;
+      line-height: 1.6;
+      padding: 20px;
       display: flex;
       justify-content: center;
-      align-items: center;
-      text-align: center;
+      align-items: flex-start;
       min-height: 100vh;
     }
-    div {
-      width: 95%;
-      max-width: 1000px;
-      text-align: left;
+    h1, h2, h3, h4, h5, h6 { color: #FFFFFF; }
+    a {
+      /* リンク色はそのまま */
+      color: #BB86FC;
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
     }
+    a:hover { color: #D0AFFF; }
+    
+    /* コンテナ */
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background-color: #1E1E1E;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      padding: 30px;
+      overflow: hidden;
+    }
+    
+    /* タイトル */
     h1 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
+      font-size: 2rem;
+      margin-bottom: 15px;
+      text-align: center;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
     }
+    
+    /* 小リンク部分：各リンクを改行表示 */
+    p.small-links {
+      text-align: center;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+    p.small-links a {
+      font-size: 0.9rem;
+      display: block;
+      margin: 4px 0;
+    }
+    
+    /* テーブル（PC表示用） */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 20px;
+      margin: 20px 0;
+      background-color: #272727;
+      border-radius: 4px;
+      overflow: hidden;
     }
-    th, td {
-      padding: 10px 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background-color: #f2f2f2;
+    thead th {
+      padding: 12px 15px;
+      background-color: #333;
+      font-weight: 500;
       font-size: 1rem;
+      text-align: left;
     }
-    td {
+    /* 「zkLink Nova Mainnet Address」は左寄せ */
+    thead th:nth-child(2) { text-align: left; }
+    
+    tbody td {
+      padding: 12px 15px;
       font-size: 0.9rem;
+      border-bottom: 1px solid #333;
       word-break: break-word;
+      text-align: left;
+      line-height: 1.5;
     }
-    .footer {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: #555;
-      width: 100%;
-      text-align: center;
-    }
-    .info-text {
-      font-size: 0.9rem;
-      color: #777;
-    }
-    a {
-      color: #007bff;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .footer a {
-      display: inline-block;
-      margin: 5px 10px;
-    }
+    /* Rank列中央寄せ */
+    thead th:first-child,
+    tbody td:first-child { text-align: center; }
+    
+    tbody tr:hover { background-color: #2a2a2a; }
+    .nowrap { white-space: nowrap; }
+    
+    /* モバイル用：カード表示に変換 */
     @media (max-width: 768px) {
-      h1 { font-size: 1.5rem; }
-      th, td { padding: 8px 10px; }
-      .footer { font-size: 0.8rem; }
-      .info-text { font-size: 0.8rem; }
+      table { border: none; }
+      thead { display: none; }
+      tbody, tr, td { display: block; width: 100%; }
+      tr {
+        background-color: #272727;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 4px;
+      }
+      td {
+        text-align: left;
+        padding: 8px 0;
+        border: none;
+        position: relative;
+      }
+      td::before {
+        content: attr(data-label);
+        font-weight: 500;
+        display: inline-block;
+        width: 90px;
+        /* モバイルでは項目名はリンク色ではなく通常テキストよりやや明るめ */
+        color: #BBBBBB;
+      }
+      td:not(:last-child) { margin-bottom: 8px; }
+td[data-label="Rank"]::before {
+  width: 50px;
+}
+      td[data-label="Address"] {
+        text-align: left !important;
+      }
+      td[data-label="Address"] a,
+      td[data-label="Address"] strong {
+        display: inline-flex;
+        text-align: left;
+        width: 100%;
+      }
     }
-    @media (max-width: 480px) {
-      h1 { font-size: 1.2rem; }
-      th, td { font-size: 0.8rem; padding: 6px 8px; }
-      .footer { font-size: 0.75rem; }
-      .info-text { font-size: 0.75rem; }
+    
+    /* フッター */
+    .footer {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: #888888;
+      text-align: center;
+      line-height: 1.4;
     }
+    .footer a { display: inline-block; margin: 5px 10px; }
+    .info-text { margin-bottom: 15px; }
   </style>
 </head>
 <body>
-  <div>
+  <div class="container">
     <h1>Top 100 zkLink Rich Address List - Updated Every Hour</h1>
-    <p><small><a href="whitepaper.html" target="_blank">zkLink ホワイトペーパー(日本語訳)</a></small></p>
-    <p><small><a href="lynks/ranking.html" target="_blank">Top 100 Nova Lynks Holders Address List</a></small></p>
-    <p><small><a href="https://web.archive.org/web/20250000000000*/https://zkltop100.net" target="_blank">Holding Trends (Wayback Machine)</a></small></p>
+    <p class="small-links">
+      <a href="whitepaper.html" target="_blank">zkLink ホワイトペーパー(日本語訳)</a>
+      <a href="lynks/ranking.html" target="_blank">Top 100 Nova Lynks Holders</a>
+      <a href="https://web.archive.org/web/20250000000000*/https://zkltop100.net" target="_blank">Holding Trends (Wayback Machine)</a>
+    </p>
     <table id="balances-table">
       <thead>
         <tr>
           <th>Rank</th>
           <th>zkLink Nova Mainnet Address</th>
-          <th>Quantity</th>
-          <th>Percentage</th>
-          <th>Value</th>
+          <th class="nowrap">Quantity</th>
+          <th class="nowrap">Percentage</th>
+          <th class="nowrap">Value</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Data will be inserted here -->
+        <!-- サンプル行 -->
+        <tr>
+          <td data-label="Rank">1</td>
+          <td data-label="Address"><a href="https://explorer.zklink.io/address/0x123..." target="_blank">0x123...abc</a></td>
+          <td class="nowrap" data-label="Quantity">10,000 ZKL</td>
+          <td class="nowrap" data-label="Percentage">1.0000%</td>
+          <td class="nowrap" data-label="Value">$10,000.00</td>
+        </tr>
+        <!-- JSから動的にデータを挿入 -->
       </tbody>
     </table>
     <div class="footer">
@@ -118,16 +200,13 @@
       </p>
       <p class="info-text">
         <strong>Disclaimer</strong><br>
-        The rankings and token quantities shown on this site are fetched from external APIs and are provided for informational purposes only.<br>
-        I do not guarantee the accuracy or completeness of this information.<br>
-        Please verify any data before making decisions based on it.<br>
-        The creator of this site is not responsible for any actions taken based on the information provided here.
+        The rankings and token quantities shown on this site are fetched from external APIs and are provided for informational purposes only. Please verify any data before making decisions.
       </p>
       <p>Created by <a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
     </div>
   </div>
+  
   <script>
-    // 現在のZKL価格（USD）をCoinGeckoから取得する関数
     async function fetchCurrentPrice() {
       try {
         const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=zklink&vs_currencies=usd');
@@ -139,39 +218,34 @@
       }
     }
 
-    // ZKL価格を取得してタイトルを更新
     async function updateTitleWithPrice() {
       const currentPrice = await fetchCurrentPrice();
       const title = `ZKL $${currentPrice.toFixed(3)} | Top 100 zkLink Rich Address List - Updated Every Hour`;
       document.title = title;
     }
-    updateTitleWithPrice(); // タイトルを更新する関数を実行
+    updateTitleWithPrice();
 
     async function fetchBalances() {
-        const currentPrice = await fetchCurrentPrice();
+      const currentPrice = await fetchCurrentPrice();
+      try {
         const response = await fetch('/get-balances');
         const balances = await response.json();
         const tableBody = document.querySelector('#balances-table tbody');
         tableBody.innerHTML = '';
         balances.forEach(item => {
-            const row = document.createElement('tr');
-            let address = `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>`;
-            if (item.label) {
-                address = `<strong>${item.label}</strong><br>${address}`;
-            }
-            const cleanedBalance = item.balance.replace(' ZKL', '').replace(/,/g, '');
-            const balanceValue = cleanedBalance;
-            const totalSupply = 1000000000;
-            const percentage = (balanceValue / totalSupply) * 100;
-            const value = balanceValue * currentPrice;
-            row.innerHTML = 
-              `<td>${item.Ranking}</td>
-              <td>${address}</td>
-              <td>${item.balance}</td>
-              <td>${percentage.toFixed(4)}%</td>
-              <td>$${value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
-            tableBody.appendChild(row);
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td data-label="Rank">${item.Ranking}</td>
+            <td data-label="Address">${ item.label ? `<strong>${item.label}</strong><br><a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>` : `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>` }</td>
+            <td class="nowrap" data-label="Quantity">${item.balance}</td>
+            <td class="nowrap" data-label="Percentage">${(Number(item.balance.replace(' ZKL','').replace(/,/g, '')) / 1000000000 * 100).toFixed(4)}%</td>
+            <td class="nowrap" data-label="Value">$${(Number(item.balance.replace(' ZKL','').replace(/,/g, '')) * currentPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          `;
+          tableBody.appendChild(row);
         });
+      } catch (error) {
+        console.error("Error fetching balances:", error);
+      }
     }
     fetchBalances();
   </script>
