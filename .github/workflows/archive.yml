@@ -1,18 +1,57 @@
 name: Archive Website via Wayback Machine
 
+
 on:
-  schedule:
-    # 毎日UTC+0に実行
-    - cron: '0 0 * * *'
-  workflow_dispatch:  # 手動実行用のオプション
+schedule:
+# 毎日UTC+0に実行（必要に応じて変更）
+- cron: '0 0 * * *'
+workflow_dispatch: # 手動実行用のオプション
+
+
+permissions:
+contents: read # 最小権限
+
+
+concurrency:
+group: archive-wayback
+cancel-in-progress: false
+
 
 jobs:
-  archive:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send archive request to Wayback Machine
-        run: |
-          SITE_URL="https://zkltop100.net"
-          # Wayback Machine に保存リクエストを送信
-          curl -s "https://web.archive.org/save/${SITE_URL}" -o /dev/null
+archive:
+runs-on: ubuntu-latest
+steps:
+- name: Wake site
+run: |
+SITE_URL="https://zkltop100.net"
+echo "Waking ${SITE_URL} (try to trigger warm start)"
+# 軽めにアクセスして起動を促す（タイムアウト短め）
+curl -sS --max-time 10 "$SITE_URL" || true
+# スピンアップ待ち（120秒推奨）。状況に応じて90〜150秒に調整。
+sleep 120
 
+
+- name: Request Wayback save (retry)
+run: |
+SITE_URL="https://zkltop100.net"
+MAX_ATTEMPTS=3
+attempt=1
+while [ $attempt -le $MAX_ATTEMPTS ]; do
+echo "Attempt $attempt to request Wayback save"
+# Wayback に保存リクエストを送る。ステータスコードを取得。
+resp=$(curl -s -o /dev/null -w "%{http_code}" "https://web.archive.org/save/${SITE_URL}")
+echo "Wayback HTTP response: $resp"
+# 200/202/301/302 等を成功扱いにする
+if [[ "$resp" =~ ^(200|202|301|302)$ ]]; then
+echo "Save request accepted (HTTP $resp)."
+break
+fi
+# 再試行前に指数バックオフ（60s, 120s, ...）
+sleep $((60 * attempt))
+attempt=$((attempt + 1))
+done
+
+
+- name: Done
+run: |
+echo "Archive workflow finished."
