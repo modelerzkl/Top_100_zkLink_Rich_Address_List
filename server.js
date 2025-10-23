@@ -1,21 +1,13 @@
-// server.js
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
-
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Configurable values via ENV
-const API_URL = process.env.EXPLORER_API_URL || 'https://explorer-api.zklink.io/tokens/balance/list?page=1&limit=100&tokenAddress=0xC967dabf591B1f4B86CFc74996EAD065867aF19E';
-const CACHE_TTL_MS = Number(process.env.CACHE_TTL_MS) || 5 * 60 * 1000; // 5 minutes
-const ARCHIVE_SECRET = process.env.ARCHIVE_SECRET || ''; // optional secret to protect /save-to-archive
-const ARCHIVE_USER_AGENT = process.env.ARCHIVE_USER_AGENT || 'zkl-top100-bot/1.0 (+https://yourdomain.example)';
+// API endpoint (kept as you provided)
+const apiUrl = 'https://explorer-api.zklink.io/tokens/balance/list?page=1&limit=100&tokenAddress=0xC967dabf591B1f4B86CFc74996EAD065867aF19E';
 
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-
-// optional labels mapping (you can extend this)
+// Address labels (unchanged)
 const addressLabels = {
   '0xC9A3Cf506180757AcfCbE8D78B73E5335926e65B': 'Community Treasury',
   '0x82C1889F00EfcDaB3Cde8Ce2DBAAEa57f8Dd6D0B': 'Ecosystem Development',
@@ -29,150 +21,69 @@ const addressLabels = {
   '0x0D0707963952f2fBA59dD06f2b425ace40b492Fe': 'gate.io'
 };
 
-// Simple in-memory cache
-let balancesCache = {
-  ts: 0,
-  data: null
-};
+// serve static files from ./public
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Utility: parse balances from API response (robust)
-function parseBalancesResponse(apiResponse) {
-  // The explorer API might return { data: [...] } or [...] directly
-  const raw = apiResponse && apiResponse.data ? apiResponse.data : apiResponse;
-  // Sometimes nested: { data: { items: [...] } }
-  const arr = Array.isArray(raw) ? raw : (raw && raw.items ? raw.items : []);
-  return arr;
-}
+// lightweight CORS for GETs (helps if CI or other origin requests the API)
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  next();
+});
 
-// GET /get-balances
 app.get('/get-balances', async (req, res) => {
   try {
-    const now = Date.now();
-    if (balancesCache.data && (now - balancesCache.ts) < CACHE_TTL_MS) {
-      return res.json(balancesCache.data);
+    const response = await axios.get(apiUrl, {
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'zkltop100-bot/1.0 (+https://zkltop100.net)'
+      }
+    });
+
+    const raw = response.data;
+
+    // Normalize API response shapes to an array
+    let items = [];
+    if (Array.isArray(raw)) {
+      items = raw;
+    } else if (raw && Array.isArray(raw.data)) {
+      items = raw.data;
+    } else if (raw && Array.isArray(raw.result)) {
+      items = raw.result;
+    } else if (raw && Array.isArray(raw.list)) {
+      items = raw.list;
+    } else {
+      // Try to find the first array anywhere (defensive)
+      for (const k of Object.keys(raw || {})) {
+        if (Array.isArray(raw[k])) { items = raw[k]; break; }
+      }
     }
 
-    const response = await axios.get(API_URL, { timeout: 15000 });
-    const rawList = parseBalancesResponse(response.data);
-
-    // Normalize items: ensure { address, balance } and parse numeric amount
-    const normalized = rawList.map(item => {
-      // handle shapes like { address, balance } or { owner: address, balance: '123' }
-      const address = item.address || item.owner || item.holder || item.account;
-      const balanceStr = item.balance || item.amount || item.value || '0';
-      const balanceNum = Number(String(balanceStr).replace(/,/g, '')) || 0;
+    // Ensure we always return an array of items shaped the way the frontend expects
+    const balances = items.map(item => {
+      // Accept different property names safely
+      const rawBalance = item.balance ?? item.amount ?? item.value ?? 0;
+      const balanceNum = Number(String(rawBalance).replace(/,/g, '')) || 0;
+      const formattedBalance = Number(balanceNum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ZKL';
+      const label = item.address && addressLabels[item.address] ? addressLabels[item.address] + ' :' : undefined;
       return {
         ...item,
-        address,
-        balanceNum
-      };
-    }).filter(it => it.address);
-
-    const total = normalized.reduce((s, it) => s + (Number(it.balanceNum) || 0), 0) || 0.0;
-
-    // Format items and ranking
-    const sorted = normalized.sort((a, b) => Number(b.balanceNum) - Number(a.balanceNum));
-    const result = sorted.map((it, idx) => {
-      const formattedBalance = Number(it.balanceNum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ZKL';
-      const percentage = total > 0 ? (Number(it.balanceNum) / total * 100) : 0;
-      return {
-        Ranking: idx + 1,
-        address: it.address,
-        rawBalance: Number(it.balanceNum),
         balance: formattedBalance,
-        percentage: Number(percentage.toFixed(6)),
-        label: addressLabels[it.address] ? addressLabels[it.address] + ' :' : undefined
+        label
       };
     });
 
-    // cache
-    balancesCache = { ts: Date.now(), data: result };
-
-    res.json(result);
+    const ranked = balances.map((it, idx) => ({ ...it, Ranking: idx + 1 }));
+    return res.json(ranked);
   } catch (error) {
-    console.error('Error fetching balances:', error && error.message ? error.message : error);
-    res.status(500).json({ error: 'Failed to fetch balances' });
+    console.error('Error fetching data from explorer API:', error.message || error);
+    // Return an empty array (200) to avoid client-side JS throwing when fetch() resolves
+    return res.json([]);
   }
 });
 
-/**
- * POST /save-to-archive
- * Body: { url: 'https://example.com' }
- * Optional header: X-ARCHIVE-SECRET (if ARCHIVE_SECRET is set)
- *
- * This endpoint will call https://web.archive.org/save/<encoded-url>
- * and return the snapshot URL (if available).
- */
-const recentSaves = new Map(); // simple in-memory rate control: url -> timestamp
-
-app.post('/save-to-archive', async (req, res) => {
-  try {
-    const providedSecret = req.header('X-ARCHIVE-SECRET') || req.body.secret || '';
-    if (ARCHIVE_SECRET && providedSecret !== ARCHIVE_SECRET) {
-      return res.status(403).json({ error: 'Invalid archive secret' });
-    }
-
-    const target = (req.body && req.body.url) ? String(req.body.url).trim() : '';
-    if (!target || !/^https?:\/\//i.test(target)) {
-      return res.status(400).json({ error: 'Invalid or missing url in body' });
-    }
-
-    // Simple rate-limit: same URL cannot be snapped more than once per 6 hours (configurable)
-    const MIN_INTERVAL_MS = Number(process.env.ARCHIVE_MIN_INTERVAL_MS) || (6 * 60 * 60 * 1000);
-    const last = recentSaves.get(target) || 0;
-    const now = Date.now();
-    if (now - last < MIN_INTERVAL_MS && !ARCHIVE_SECRET) { // allow bypass with secret
-      return res.status(429).json({ error: 'Recently saved. Please wait before saving again.' });
-    }
-
-    // Perform save request
-    const saveApi = 'https://web.archive.org/save/' + encodeURIComponent(target);
-    let snapshotUrl = null;
-    try {
-      // We expect a redirect (302) to the snapshot; set maxRedirects: 0 to capture Location header
-      await axios.get(saveApi, {
-        timeout: 30000,
-        maxRedirects: 0,
-        headers: {
-          'User-Agent': ARCHIVE_USER_AGENT,
-          'Accept': 'text/html'
-        },
-        validateStatus: null
-      }).then(response => {
-        // 302/301 redirect handling
-        if (response.status === 302 || response.status === 301) {
-          const loc = response.headers.location || response.headers['content-location'];
-          if (loc) {
-            snapshotUrl = loc.startsWith('http') ? loc : ('https://web.archive.org' + loc);
-          }
-        } else if (response.status === 200) {
-          // Some responses may return 200 and include 'content-location' header
-          const cl = response.headers['content-location'] || response.headers.location;
-          if (cl) snapshotUrl = cl.startsWith('http') ? cl : ('https://web.archive.org' + cl);
-        } else {
-          // Could be 429 or 503 - capture body message later
-        }
-      });
-    } catch (err) {
-      // axios throws for non-2xx only if validateStatus defaults; we set validateStatus:null so this should be rare.
-      console.warn('Archive save axios error:', err && err.message);
-    }
-
-    recentSaves.set(target, now);
-
-    if (snapshotUrl) {
-      return res.json({ success: true, snapshot: snapshotUrl });
-    } else {
-      // If we couldn't get the redirect, return a helpful URL where user can try manually
-      const manual = 'https://web.archive.org/save/' + encodeURIComponent(target);
-      return res.status(202).json({ success: false, message: 'Save request accepted but snapshot URL not returned. You can try the manual save URL.', manualSaveUrl: manual });
-    }
-  } catch (err) {
-    console.error('save-to-archive error:', err && err.message ? err.message : err);
-    res.status(500).json({ error: 'Failed to request archive snapshot' });
-  }
-});
+app.get('/health', (req, res) => res.send('OK'));
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
 });

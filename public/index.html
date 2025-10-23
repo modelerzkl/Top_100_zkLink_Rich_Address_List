@@ -1,200 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Top 100 zkLink Rich Address List - Updated Every Hour</title>
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GSQPQG7YKX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GSQPQG7YKX');
+  </script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ベースリセット＆フォント */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html { scroll-behavior: smooth; }
+    /* 通常テキストをやや明るいグレーに、見出しは白に */
     body {
-      background: #121212;
-      color: #ccc;
       font-family: 'Roboto', sans-serif;
+      background-color: #121212;
+      color: #CCCCCC;
+      line-height: 1.6;
       padding: 20px;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      min-height:100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
     }
+    h1, h2, h3, h4, h5, h6 { color: #FFFFFF; }
+    a {
+      /* リンク色はそのまま */
+      color: #BB86FC;
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
+    }
+    a:hover { color: #D0AFFF; }
+    
+    /* コンテナ */
     .container {
-      width:100%;
-      max-width:1100px;
-      background:#1e1e1e;
-      border-radius:8px;
-      padding:24px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      width: 100%;
+      max-width: 1100px;
+      background-color: #1E1E1E;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      padding: 30px;
+      overflow: hidden;
     }
-    h1 { color:#fff; text-align:center; margin-bottom:12px; font-size:1.8rem; }
-    .top-actions { display:flex; gap:12px; justify-content:center; margin-bottom:14px; flex-wrap:wrap; }
-    .btn {
-      background:#333; color:#fff; padding:8px 12px; border-radius:6px; text-decoration:none; cursor:pointer; border:1px solid #444;
+    
+    /* タイトル */
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      text-align: center;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
     }
-    .btn.secondary { background:transparent; color:#bbb; border:1px solid #333; }
-    .status { text-align:center; margin-top:10px; color:#999; font-size:0.95rem; }
+    
+    /* 小リンク部分：各リンクを改行表示 */
+    p.small-links {
+      text-align: center;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+    p.small-links a {
+      font-size: 0.9rem;
+      display: block;
+      margin: 4px 0;
+    }
+    
+    /* テーブル（PC表示用） */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background-color: #272727;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    thead th {
+      padding: 12px 15px;
+      background-color: #333;
+      font-weight: 500;
+      font-size: 1rem;
+      text-align: left;
+    }
+    /* 「zkLink Nova Mainnet Address」は左寄せ */
+    thead th:nth-child(2) { text-align: left; }
+    
+    tbody td {
+      padding: 12px 15px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #333;
+      word-break: break-word;
+      text-align: left;
+      line-height: 1.5;
+    }
+    /* Rank列中央寄せ */
+    thead th:first-child,
+    tbody td:first-child { text-align: center; }
+    
+    tbody tr:hover { background-color: #2a2a2a; }
+    .nowrap { white-space: nowrap; }
+    
+    /* モバイル用：カード表示に変換 */
+    @media (max-width: 768px) {
+      table { border: none; }
+      thead { display: none; }
+      tbody, tr, td { display: block; width: 100%; }
+      tr {
+        background-color: #272727;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 4px;
+      }
+      td {
+        text-align: left;
+        padding: 8px 0;
+        border: none;
+        position: relative;
+      }
+      td::before {
+        content: attr(data-label);
+        font-weight: 500;
+        display: inline-block;
+        width: 90px;
+        /* モバイルでは項目名はリンク色ではなく通常テキストよりやや明るめ */
+        color: #BBBBBB;
+      }
+      td:not(:last-child) { margin-bottom: 8px; }
+      td[data-label="Rank"]::before {
+        width: 50px;
+      }
+      td[data-label="Address"] {
+        text-align: left !important;
+      }
+      td[data-label="Address"] a,
+      td[data-label="Address"] strong {
+        display: inline-flex;
+        text-align: left;
+        width: 100%;
+      }
+    }
+    
+    /* フッター */
+    .footer {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: #888888;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .footer a { display: inline-block; margin: 5px 5px; }
+    .info-text { margin-bottom: 10px; }
 
-    table { width:100%; border-collapse:collapse; margin-top:18px; background:#272727; border-radius:6px; overflow:hidden; }
-    thead th { padding:12px 14px; background:#333; color:#eee; text-align:left; font-weight:500; }
-    tbody td { padding:12px 14px; border-bottom:1px solid #333; font-size:0.95rem; }
-    tbody tr:hover { background:#2a2a2a; }
-    .nowrap { white-space:nowrap; }
+    /* Adjusting the spacing for 'Created by' section */
+    .footer p:last-child {
+      margin-top: 10px;
+    }
 
-    .footer { margin-top:18px; color:#888; font-size:0.9rem; text-align:center; }
-    .small-links a { color:#bb86fc; text-decoration:none; display:inline-block; margin:0 6px; }
+    /* モバイル向け調整 */
+    @media (max-width: 768px) {
+      .footer {
+        font-size: 0.75rem;
+        margin-top: 20px;
+      }
 
-    /* mobile */
-    @media (max-width:768px) {
-      table, thead, tbody, th, td, tr { display:block; width:100%; }
-      thead { display:none; }
-      tr { margin-bottom:12px; background:#272727; padding:12px; border-radius:6px; }
-      td { padding:6px 0; border:none; }
-      td::before { content: attr(data-label); display:inline-block; width:110px; color:#bbb; font-weight:500; }
+      .footer p {
+        margin-bottom: 5px;
+      }
+
+      .footer p:last-child {
+        margin-top: 5px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1 id="page-title">Top 100 zkLink Rich Address List</h1>
-
-    <div class="top-actions">
-      <button class="btn" id="refresh-btn">Refresh Now</button>
-      <button class="btn secondary" id="save-wayback-btn">Save snapshot to Wayback</button>
-      <a class="btn secondary" id="open-wayback" href="https://web.archive.org/web/*/https://zkltop100.net" target="_blank">View Wayback History</a>
-    </div>
-
-    <div class="status" id="status">Loading data…</div>
-
-    <table id="balances-table" aria-live="polite">
+    <h1>Top 100 zkLink Rich Address List - Updated Every Hour</h1>
+    <p class="small-links">
+      <a href="whitepaper.html" target="_blank">zkLink ホワイトペーパー(日本語訳)</a>
+      <a href="lynks/ranking.html" target="_blank">Top 100 Nova Lynks Holders</a>
+      <a href="https://web.archive.org/web/20250000000000*/https://zkltop100.net" target="_blank">Holding Trends (Wayback Machine)</a>
+    </p>
+    <table id="balances-table">
       <thead>
         <tr>
-          <th style="width:60px">Rank</th>
-          <th>Address / Label</th>
-          <th class="nowrap" style="width:150px">Quantity</th>
-          <th class="nowrap" style="width:110px">Percentage</th>
+          <th>Rank</th>
+          <th>zkLink Nova Mainnet Address</th>
+          <th class="nowrap">Quantity</th>
+          <th class="nowrap">Percentage</th>
+          <th class="nowrap">Value</th>
         </tr>
       </thead>
       <tbody>
-        <!-- rows inserted by JS -->
+        <!-- サンプル行 -->
+        <tr>
+          <td data-label="Rank">1</td>
+          <td data-label="Address"><a href="https://explorer.zklink.io/address/0x123..." target="_blank">0x123...abc</a></td>
+          <td class="nowrap" data-label="Quantity">10,000 ZKL</td>
+          <td class="nowrap" data-label="Percentage">1.0000%</td>
+          <td class="nowrap" data-label="Value">$10,000.00</td>
+        </tr>
+        <!-- JSから動的にデータを挿入 -->
       </tbody>
     </table>
-
     <div class="footer">
-      <p>
+      <p class="info-text">
         <strong>Reference</strong><br>
-        <a class="small-links" href="https://explorer-api.zklink.io/docs#/" target="_blank">zkLink Explorer API</a> |
-        <a class="small-links" href="https://www.coingecko.com/en/coins/zklink" target="_blank">CoinGecko ZKL</a>
+        <a href="https://zk.link/governance" target="_blank">zkLink Treasury | zk.link</a><br>
+        <a href="https://explorer-api.zklink.io/docs#/" target="_blank">zkLink Nova Block Explorer API | zklink.io</a><br>
+        <a href="https://etherscan.io/token/0xfc385a1df85660a7e041423db512f779070fcede#balances" target="_blank">ZKLink (ZKL) Token Tracker | Etherscan</a><br>
+        <a href="https://www.coingecko.com/en/coins/zklink" target="_blank">zkLink Price | CoinGecko (API)</a>
       </p>
-      <p>Created by <a href="https://x.com/modeler_zkl" target="_blank">@modeler_zkl</a></p>
+      <p class="info-text">
+        <strong>Disclaimer</strong><br>
+        The rankings and token quantities shown on this site are fetched from external APIs and are provided for informational purposes only.<br>
+        I do not guarantee the accuracy or completeness of this information.<br>
+        Please verify any data before making decisions based on it.<br>
+        The creator of this site is not responsible for any actions taken based on the information provided here.
+      </p>
+      <p>Created by <a href="https://x.com/modeler_zkl" target="_blank">X@modeler_zkl</a></p>
     </div>
   </div>
-
+  
   <script>
-    const refreshBtn = document.getElementById('refresh-btn');
-    const saveBtn = document.getElementById('save-wayback-btn');
-    const statusEl = document.getElementById('status');
-    const tbody = document.querySelector('#balances-table tbody');
-    const pageTitle = document.getElementById('page-title');
-
-    // Update title with price (CoinGecko). If fails, leave default.
     async function fetchCurrentPrice() {
       try {
-        const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=zklink&vs_currencies=usd');
-        const j = await r.json();
-        if (j && j.zklink && typeof j.zklink.usd === 'number') {
-          const p = j.zklink.usd;
-          document.title = `ZKL $${p.toFixed(3)} | Top 100 zkLink Rich Address List`;
-          pageTitle.textContent = `Top 100 zkLink Rich Address List — ZKL $${p.toFixed(3)}`;
-          return p;
-        }
-      } catch (e) {
-        console.warn('price fetch failed', e);
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=zklink&vs_currencies=usd');
+        const data = await response.json();
+        return data.zklink.usd;
+      } catch (error) {
+        console.error("Error fetching current price:", error);
+        return 0;
       }
-      return 0;
     }
 
-    async function fetchBalancesAndRender() {
-      statusEl.textContent = 'Fetching balances...';
-      try {
-        const r = await fetch('/get-balances');
-        if (!r.ok) throw new Error('Bad response');
-        const list = await r.json();
-        tbody.innerHTML = '';
-        if (!Array.isArray(list) || list.length === 0) {
-          statusEl.textContent = 'No data available.';
-          return;
-        }
-        // compute total from rawBalance (server already provides percentage but we'll show consistent values)
-        const total = list.reduce((s, it) => s + (Number(it.rawBalance) || 0), 0);
+    async function updateTitleWithPrice() {
+      const currentPrice = await fetchCurrentPrice();
+      const title = `ZKL $${currentPrice.toFixed(3)} | Top 100 zkLink Rich Address List - Updated Every Hour`;
+      document.title = title;
+    }
+    updateTitleWithPrice();
 
-        list.forEach(item => {
-          const tr = document.createElement('tr');
-          const balanceNumber = Number(item.rawBalance) || 0;
-          const formattedQty = (balanceNumber).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ZKL';
-          const percent = total > 0 ? (balanceNumber / total * 100) : 0;
-          tr.innerHTML = `
+    async function fetchBalances() {
+      const currentPrice = await fetchCurrentPrice();
+      try {
+        const response = await fetch('/get-balances');
+        const balances = await response.json();
+        const tableBody = document.querySelector('#balances-table tbody');
+        tableBody.innerHTML = '';
+        balances.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
             <td data-label="Rank">${item.Ranking}</td>
-            <td data-label="Address">${item.label ? `<strong>${item.label}</strong><br>` : ''}<a href="https://explorer.zklink.io/address/${item.address}" target="_blank" rel="noopener noreferrer">${item.address}</a></td>
-            <td class="nowrap" data-label="Quantity">${formattedQty}</td>
-            <td class="nowrap" data-label="Percentage">${percent.toFixed(6)}%</td>
+            <td data-label="Address">${ item.label ? `<strong>${item.label}</strong><br><a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>` : `<a href="https://explorer.zklink.io/address/${item.address}" target="_blank">${item.address}</a>` }</td>
+            <td class="nowrap" data-label="Quantity">${item.balance}</td>
+            <td class="nowrap" data-label="Percentage">${(Number(item.balance.replace(' ZKL','').replace(/,/g, '')) / 1000000000 * 100).toFixed(4)}%</td>
+            <td class="nowrap" data-label="Value">$${(Number(item.balance.replace(' ZKL','').replace(/,/g, '')) * currentPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
           `;
-          tbody.appendChild(tr);
+          tableBody.appendChild(row);
         });
-
-        statusEl.textContent = `Loaded ${list.length} addresses — last updated: ${new Date().toLocaleString()}`;
-      } catch (err) {
-        console.error('fetchBalances error', err);
-        statusEl.textContent = 'Failed to load balances.';
+      } catch (error) {
+        console.error("Error fetching balances:", error);
       }
     }
-
-    // Save snapshot to Wayback via server endpoint
-    async function saveToWayback() {
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'Saving…';
-      statusEl.textContent = 'Requesting Wayback snapshot...';
-      try {
-        // default target can be this site; change if you want to save another URL
-        const targetUrl = window.location.origin; // e.g. https://your-deployed-app.onrender.com
-        const r = await fetch('/save-to-archive', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: targetUrl })
-        });
-        const j = await r.json();
-        if (r.ok && j.success && j.snapshot) {
-          statusEl.innerHTML = `Saved to Wayback: <a href="${j.snapshot}" target="_blank">${j.snapshot}</a>`;
-        } else if (j.manualSaveUrl) {
-          statusEl.innerHTML = `Save accepted but snapshot URL not returned. Try manual: <a href="${j.manualSaveUrl}" target="_blank">${j.manualSaveUrl}</a>`;
-        } else {
-          statusEl.textContent = j.error || j.message || 'Wayback save failed';
-        }
-      } catch (err) {
-        console.error('saveToWayback failed', err);
-        statusEl.textContent = 'Wayback save request failed';
-      } finally {
-        saveBtn.disabled = false;
-        saveBtn.textContent = 'Save snapshot to Wayback';
-      }
-    }
-
-    refreshBtn.addEventListener('click', async () => {
-      refreshBtn.disabled = true;
-      refreshBtn.textContent = 'Refreshing…';
-      await fetchCurrentPrice();
-      await fetchBalancesAndRender();
-      refreshBtn.disabled = false;
-      refreshBtn.textContent = 'Refresh Now';
-    });
-    saveBtn.addEventListener('click', saveToWayback);
-
-    // initial load
-    (async () => {
-      await fetchCurrentPrice();
-      await fetchBalancesAndRender();
-      // auto-refresh every hour (client-side). Render hobby doesn't support cron; if you need server cron use external scheduler.
-      setInterval(fetchBalancesAndRender, 60 * 60 * 1000);
-    })();
+    fetchBalances();
   </script>
 </body>
 </html>
+

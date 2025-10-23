@@ -1,0 +1,50 @@
+name: Archive site to Wayback Machine
+
+on:
+  schedule:
+    # daily at 00:00 UTC (adjust as needed)
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Attempt to archive site to Wayback Machine (with retries)
+        run: |
+          set -euo pipefail
+          TARGET="https://zkltop100.net"
+          SAVE_URL="https://web.archive.org/save/${TARGET}"
+
+          echo "Archiving ${TARGET}"
+
+          # --- Render Hobby を利用していることを想定したウォームアップ ---
+          # Hobby（スリープあり）の場合、最初に数回ウォームアップリクエストを送って
+          # サイトが起動するのを待ちます。ウォームアップ成功後に Wayback に保存します。
+
+          for warm in 1 2 3 4 5; do
+            echo "Warmup attempt ${warm}..."
+            status=$(curl -s -o /dev/null -w "%{http_code}" "$TARGET" || true)
+            echo "Target status: $status"
+            if [ "$status" -eq 200 ]; then
+              echo "Warmup successful"
+              break
+            fi
+            sleep $((warm * 8))
+          done
+
+          for attempt in 1 2 3 4 5; do
+            echo "Archive attempt ${attempt}..."
+            status=$(curl -s -o /dev/null -w "%{http_code}" "$SAVE_URL") || true
+            echo "HTTP status: $status"
+            if [ "$status" -ge 200 ] && [ "$status" -lt 400 ]; then
+              echo "Saved successfully (status $status)"
+              exit 0
+            fi
+            sleep $((attempt * 10))
+          done
+
+          echo "Failed to archive after retries"
+          echo "--- Debug output from a final request: ---"
+          curl -v "$SAVE_URL" || true
+          exit 1
