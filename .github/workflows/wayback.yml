@@ -2,29 +2,34 @@ name: Archive site to Wayback Machine
 
 on:
   schedule:
-    # daily at 00:00 UTC (adjust as needed)
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'  # UTC daily 00:00
   workflow_dispatch:
 
 jobs:
   archive:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Attempt to archive site to Wayback Machine (with retries)
+      - name: Checkout (for repository files / logs)
+        uses: actions/checkout@v4
+
+      - name: Attempt to archive site to Wayback Machine (with enhanced retries & debug)
         run: |
           set -euo pipefail
+
           TARGET="https://zkltop100.net"
           SAVE_URL="https://web.archive.org/save/${TARGET}"
+          UA="zkltop100-archive-bot/1.0 (+https://zkltop100.net)"
+          TMP_BODY="/tmp/wayback_body.html"
 
           echo "Archiving ${TARGET}"
+          echo "Save URL: ${SAVE_URL}"
+          echo "User-Agent: ${UA}"
 
-          # --- Render Hobby を利用していることを想定したウォームアップ ---
-          # Hobby（スリープあり）の場合、最初に数回ウォームアップリクエストを送って
-          # サイトが起動するのを待ちます。ウォームアップ成功後に Wayback に保存します。
-
+          # Warmup: wait until site returns 200 (helps Hobby / sleep-on-demand hosts)
           for warm in 1 2 3 4 5; do
             echo "Warmup attempt ${warm}..."
-            status=$(curl -s -o /dev/null -w "%{http_code}" "$TARGET" || true)
+            status=$(curl -fsS -o /dev/null -w "%{http_code}" --max-time 20 -A "$UA" "$TARGET" || true)
             echo "Target status: $status"
             if [ "$status" -eq 200 ]; then
               echo "Warmup successful"
@@ -33,18 +38,36 @@ jobs:
             sleep $((warm * 8))
           done
 
-          for attempt in 1 2 3 4 5; do
+          # Archive attempts: follow redirects, save response body for debugging
+          for attempt in 1 2 3 4 5 6 7; do
             echo "Archive attempt ${attempt}..."
-            status=$(curl -s -o /dev/null -w "%{http_code}" "$SAVE_URL") || true
-            echo "HTTP status: $status"
-            if [ "$status" -ge 200 ] && [ "$status" -lt 400 ]; then
-              echo "Saved successfully (status $status)"
+            # -s silent, -S show errors, -L follow redirects, -w write http code, -o save body
+            http_code=$(curl -sSL -w "%{http_code}" -o "$TMP_BODY" -A "$UA" --max-time 60 "$SAVE_URL" || echo "000")
+            echo "HTTP status: $http_code"
+
+            # Save short debug snippet to actions log
+            if [ -f "$TMP_BODY" ]; then
+              echo "---- Response snippet (first 400 chars) ----"
+              head -c 400 "$TMP_BODY" || true
+              echo "---- end snippet ----"
+            fi
+
+            if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 400 ]; then
+              echo "Saved successfully (status $http_code)"
+              # try to show location header if present in the body (Wayback sometimes returns HTML with redirect link)
+              grep -i "https://web.archive.org/web/" "$TMP_BODY" || true
               exit 0
             fi
-            sleep $((attempt * 10))
+
+            # If cloudflare/520-523 or other transient errors, wait exponentially longer
+            sleep $((attempt * 12))
           done
 
           echo "Failed to archive after retries"
-          echo "--- Debug output from a final request: ---"
-          curl -v "$SAVE_URL" || true
+          echo "Final verbose debug (curl -v):"
+          curl -v -A "$UA" --max-time 60 "$SAVE_URL" || true
+          echo "----- full response body saved to $TMP_BODY -----"
+          ls -l "$TMP_BODY" || true
+          echo "Cat of last response (first 2000 chars):"
+          head -c 2000 "$TMP_BODY" || true
           exit 1
